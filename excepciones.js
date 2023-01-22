@@ -164,3 +164,22 @@ class DirectorDoesntExistException extends VideoSystemException {
         this.name = "DirectorDoesntExistException";
     }
 }
+
+
+export {BaseException,
+	InvalidAccessConstructorException,
+    AbstractClassException,
+	EmptyValueException,
+	InvalidValueException,
+    VideoSystemException,
+    CategoryAlreadyRegisteredException,
+    CategoryDoesntExistException,
+    UsernameAlreadyRegisteredException,
+    EmailAlreadyRegisteredException,
+    UserDoesntExistException,
+    ProductionAlreadyRegisteredException,
+    ProductionDoesntExistException,
+    ActorAlreadyRegisteredException,
+    ActorDoesntExistException,
+    DirectorAlreadyRegisteredException,
+    DirectorDoesntExistException};

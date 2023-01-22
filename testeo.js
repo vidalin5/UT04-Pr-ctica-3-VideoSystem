@@ -1,3 +1,24 @@
+"use strict";
+import {BaseException,
+	InvalidAccessConstructorException,
+    AbstractClassException,
+	EmptyValueException,
+	InvalidValueException,
+    VideoSystemException,
+    CategoryAlreadyRegisteredException,
+    CategoryDoesntExistException,
+    UsernameAlreadyRegisteredException,
+    EmailAlreadyRegisteredException,
+    UserDoesntExistException,
+    ProductionAlreadyRegisteredException,
+    ProductionDoesntExistException,
+    ActorAlreadyRegisteredException,
+    ActorDoesntExistException,
+    DirectorAlreadyRegisteredException,
+    DirectorDoesntExistException} from './excepciones.js';
+import {Person, Category, Resource, Production, Movie, Serie, User, Coordinate} from './implementacion.js';
+import VideoSystem from './implementacion.js';
+
 //TESTEO
 console.warn("TESTEO")
 
@@ -198,10 +219,10 @@ console.warn("PRODUCCIONES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 //Creamos algunas producciones y las añadimos
 try {
     var m1 = new Movie("La momia", "Francia", new Date("1994/11/05"), "La momia ataca", "www.urlimagenmomia.com", new Resource(120, "link1"), [new Coordinate(2425, 2211), new Coordinate(1429, 2125)]);
-    var m2 = new Movie("Star Wars", "EEUU", new Date("1998/05/12"), "En una galaxia muy lejana", "www.urlimagenstarwars.com", new Resource(155, "link1"), [new Coordinate(0242, 2261), new Coordinate(9463, 1231)]);
-    var m3 = new Movie("Avatar", "EEUU", new Date("2022/07/22"), "Un nuevo planeta", "www.urlimagenavatar.com", new Resource(180, "link1"), [new Coordinate(0073, 1314)]);
+    var m2 = new Movie("Star Wars", "EEUU", new Date("1998/05/12"), "En una galaxia muy lejana", "www.urlimagenstarwars.com", new Resource(155, "link1"), [new Coordinate(1242, 2261), new Coordinate(9463, 1231)]);
+    var m3 = new Movie("Avatar", "EEUU", new Date("2022/07/22"), "Un nuevo planeta", "www.urlimagenavatar.com", new Resource(180, "link1"), [new Coordinate(8973, 1314)]);
     var m4 = new Movie("El Señor de los Anillos", "EEUU", new Date("2003/01/30"), "La Tierra Media", "www.urlimagenanillos.com", new Resource(175, "link1"), [new Coordinate(7422, 1261)]);
-    var s1 = new Serie("Perdidos", "EEUU", new Date("1999/11/05"), "Perdidos en una isla", "www.urlimagenperdidos.com", [new Resource(50, "link1"), new Resource(50, "link2"), new Resource(50, "link3")], [new Coordinate(7777, 0001), new Coordinate(4342, 1221)], 9);
+    var s1 = new Serie("Perdidos", "EEUU", new Date("1999/11/05"), "Perdidos en una isla", "www.urlimagenperdidos.com", [new Resource(50, "link1"), new Resource(50, "link2"), new Resource(50, "link3")], [new Coordinate(7777, 3231), new Coordinate(4342, 1221)], 9);
     var s2 = new Serie("Los Soprano", "EEUU", new Date("1998/04/04"), "Peleas entre mafias", "www.urlimagensoprano.com", [new Resource(52, "link1"), new Resource(52, "link2"), new Resource(52, "link3")], [new Coordinate(5675, 5555)], 7);
     var s3 = new Serie("The Simpson", "EEUU", new Date("1988/05/12"), "Dibujos animados", "www.urlimagensimpson.com", [new Resource(20, "link1"), new Resource(20, "link2"), new Resource(20, "link3")], [new Coordinate(4290, 7753)], 30);
     var s4 = new Serie("Breaking Bad", "EEUU", new Date("2008/12/01"), "Cocinar metanfetamina", "www.urlimagenbreaking.com", [new Resource(55, "link1"), new Resource(55, "link2"), new Resource(55, "link3")], [new Coordinate(2111, 2199), new Coordinate(8003, 8343)], 5);
@@ -242,7 +263,7 @@ try {
 console.warn("INTENTAMOS ELIMINAR PRODUCTION NO REGISTRADA");
 //Intentamos borrar una PRODUCTION que no está registrada. Da ERROR
 try {
-    let m5 = new Movie("Peter Pan", "Francia", new Date("1994/11/05"), "Aventuras en el mundo de nunca jamas", "www.urlimagenpeter.com", new Resource(120, "link1"), [new Coordinate(0631, 5631)]);
+    let m5 = new Movie("Peter Pan", "Francia", new Date("1994/11/05"), "Aventuras en el mundo de nunca jamas", "www.urlimagenpeter.com", new Resource(120, "link1"), [new Coordinate(3631, 5631)]);
     vs.removeProduction(m5);
 } catch (error) {
     console.log(error);
@@ -482,7 +503,7 @@ while (!(next = generator.next()).done) {
 console.warn("INTENTAMOS DESASIGNAR PRODUCCIÓN QUE NO EXISTE");
 //Intentamos desasignar una producción que no existe a una categoría. Da ERROR
 try {
-    let m5 = new Movie("Viernes 13", "EEUU", new Date("2006/12/05"), "Película de terror", "www.urlimagenviernes.com", new Resource(140, "link1"), [new Coordinate(8644, 0555)]);
+    let m5 = new Movie("Viernes 13", "EEUU", new Date("2006/12/05"), "Película de terror", "www.urlimagenviernes.com", new Resource(140, "link1"), [new Coordinate(8644, 1555)]);
     console.log("Número de producciones asignadas a " + c1.name + ": " + vs.deassignCategory(c1, m5));
 } catch(error) {
     console.log(error);
@@ -608,7 +629,7 @@ while (!(next5 = generator5.next()).done) {
 console.warn("ASIGNANDO PRODUCCIÓN NO REGISTRADA")
 //Intentamos asignarle una producción que no existe. La añade al sistema
 try {
-    var m5 = new Movie("El Rey Leon", "EEUU", new Date("1992/05/13"), "Pelicula de animación de Disney", "www.urlimagenleon.com", new Resource(145, "link1"), [new Coordinate(0025, 2052)]);
+    var m5 = new Movie("El Rey Leon", "EEUU", new Date("1992/05/13"), "Pelicula de animación de Disney", "www.urlimagenleon.com", new Resource(145, "link1"), [new Coordinate(1125, 2052)]);
     console.log("Número de producciones asignadas a " + a3.name + ": " + vs.assignActor(a3, m5));
 } catch(error) {
     console.log(error);

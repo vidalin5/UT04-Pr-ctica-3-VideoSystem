@@ -1,3 +1,22 @@
+"use strict";
+import {BaseException,
+	InvalidAccessConstructorException,
+    AbstractClassException,
+	EmptyValueException,
+	InvalidValueException,
+    VideoSystemException,
+    CategoryAlreadyRegisteredException,
+    CategoryDoesntExistException,
+    UsernameAlreadyRegisteredException,
+    EmailAlreadyRegisteredException,
+    UserDoesntExistException,
+    ProductionAlreadyRegisteredException,
+    ProductionDoesntExistException,
+    ActorAlreadyRegisteredException,
+    ActorDoesntExistException,
+    DirectorAlreadyRegisteredException,
+    DirectorDoesntExistException} from './excepciones.js';
+
 //IMPLEMENTACIÓN
 
 //CLASE PERSON
@@ -1261,3 +1280,8 @@ let VideoSystem = (function () {
         }
     };
 })();
+
+
+export {Person, Category, Resource, Production, Movie, Serie, User, Coordinate};
+
+export default VideoSystem;
