@@ -956,77 +956,101 @@ let VideoSystem = (function () {
 
             }
 
-            //Método que le asignará una producción a una categoría
+            //Método que le asignará una o más producciones a una categoría
             //Si la categoría no existe, la añade al sistema
             //Si la producción no existe, la añade al sistema
-            assignCategory(category, production) {
+            assignCategory(category, ...production) {
 
-                //Comprobaciones
+                //Comprobaciones de la categoría
                 if(category === null) throw new InvalidValueException("category", category);
-                if(production === null) throw new InvalidValueException("production", production);
+                
+                for (let i = 0; i < production.length; i++) {
+                    if (production[i] === null) throw new InvalidValueException("production de posición " + i, production[i]);
+                }
 
-                //Comprobamos si están registradas o no
+                //Comprobamos si está registrada o no
 				function compareElementsCat(element) {
 					return (element.category.name === category.name)
 				}
 
-                function compareElementsPro(element) {
-					return (element.title === production.title)
-				}
+                let indexCat = this.#Categories.findIndex(compareElementsCat);
 
-				let indexCat = this.#Categories.findIndex(compareElementsCat);
-                let indexPro = this.#Productions.findIndex(compareElementsPro);
+                //Recorremos todas las producciones
+                for (let i = 0; i < production.length; i++) {
 
-                //Si el producto no está registrado, lo añade
-                if (indexPro == -1) {
-                    this.addProduction(production)
-                }
+                    //Comprobamos si está
+                    function compareElementsPro(element) {
+                        return (element.title === production[i].title)
+                    }
 
-                //Si la categoría no está registrada, la añade antes de asignarle el producto
-                if (indexCat == -1) {
-                    this.addCategory(category);
-                    indexCat = this.#Categories.length - 1;
-                    this.#Categories[indexCat].productions.push(production);
-                } else {
-                    this.#Categories[indexCat].productions.push(production);
+                    let indexPro = this.#Productions.findIndex(compareElementsPro);
+
+                    //Si el producto no está registrado, lo añade
+                    if (indexPro == -1) {
+                        this.addProduction(production[i])
+                    }
+
+                    //Si la categoría no está registrada, la añade antes de asignarle el producto
+                    if (indexCat == -1) {
+                        this.addCategory(category);
+                        indexCat = this.#Categories.length - 1;
+                        this.#Categories[indexCat].productions.push(production[i]);
+                    } else {
+                        this.#Categories[indexCat].productions.push(production[i]);
+                    }
+
                 }
 
                 return this.#Categories[indexCat].productions.length;
 
             }
 
-            //Método que desasigna una producción a una categoría
-            deassignCategory(category, production) {
+            //Método que desasigna una o más producciones a una categoría
+            deassignCategory(category, ...production) {
 
-                //Comprobaciones
-                if(category === null) throw new InvalidValueException("category", category);
-                if(production === null) throw new InvalidValueException("production", production);
+                //Comprobaciones de la categoría
+                if (category === null) throw new InvalidValueException("category", category);
 
-                //Comprobamos si están o no
-				function compareElementsCat(element) {
+                function compareElementsCat(element) {
 					return (element.category.name === category.name)
 				}
 
-                function compareElementsPro(element) {
-					return (element.title === production.title)
-				}
-
-				let indexCat = this.#Categories.findIndex(compareElementsCat);
+                let indexCat = this.#Categories.findIndex(compareElementsCat);
 
                 //Si la categoría no está, excepción
                 if (indexCat == -1) {
                     throw new CategoryDoesntExistException("category", category);
                 }
+                
+                //Recorremos todas las producciones para comprobar si son válidas y si están asignadas. Si alguna no lo está, salta excepción
+                for (let i = 0; i < production.length; i++) {
+                    if (production[i] === null) throw new InvalidValueException("production de posición " + i, production[i]);
 
-                let indexPro = this.#Categories[indexCat].productions.findIndex(compareElementsPro);
+                    function compareElementsPro(element) {
+                        return (element.title === production[i].title)
+                    }
 
-                //Si la producción no está, excepción
-                if (indexPro == -1) {
-                    throw new ProductionDoesntExistException("production", production);
+                    let indexPro = this.#Categories[indexCat].productions.findIndex(compareElementsPro);
+
+                    //Si la producción no está, excepción
+                    if (indexPro == -1) {
+                        throw new ProductionDoesntExistException("production de posición " + i, production);
+                    }
                 }
 
-                //La eliminamos
-                this.#Categories[indexCat].productions.splice(indexPro, 1);
+                //Recorremos de nuevo para desasignarlas
+                for (let i = 0; i < production.length; i++) {
+
+                    function compareElementsPro(element) {
+                        return (element.title === production[i].title)
+                    }
+
+                    let indexPro = this.#Categories[indexCat].productions.findIndex(compareElementsPro);
+                
+                    //La eliminamos
+                    this.#Categories[indexCat].productions.splice(indexPro, 1);
+
+                }
 
                 return this.#Categories[indexCat].productions.length;
 
@@ -1055,59 +1079,63 @@ let VideoSystem = (function () {
 
 			}
 
-            //Método que le asignará una producción a un director
+            //Método que le asignará una o más producciones a un director
             //Si el director no existe, lo añade al sistema
             //Si la producción no existe, la añade al sistema
-            assignDirector(director, production) {
+            assignDirector(director, ...production) {
 
-                //Comprobaciones
+                //Comprobaciones del director
                 if(director === null) throw new InvalidValueException("director", director);
-                if(production === null) throw new InvalidValueException("production", production);
+                
+                for (let i = 0; i < production.length; i++) {
+                    if(production[i] === null) throw new InvalidValueException("production de posición " + i, production[i]);
+                }
 
-                //Comprobamos si están registrados o no
+                //Comprobamos si está registrado o no
                 function compareElementsDir(element) {
                     return (element.director.name === director.name)
                 }
 
-                function compareElementsPro(element) {
-                    return (element.title === production.title)
-                }
-
                 let indexDir = this.#Directors.findIndex(compareElementsDir);
-                let indexPro = this.#Productions.findIndex(compareElementsPro);
 
-                //Si la producción no está, la añade
-                if (indexPro == -1) {
-                    this.addProduction(production)
-                }
+                //Recorremos las producciones
+                for (let i = 0; i < production.length; i++) {
 
-                //Si el director no está, lo añade antes de asignarle la producción
-                if (indexDir == -1) {
-                    this.addDirector(director);
-                    indexDir = this.#Directors.length - 1;
-                    this.#Directors[indexDir].productions.push(production);
-                } else {
-                    this.#Directors[indexDir].productions.push(production);
+                    //Comprobamos si están o no
+                    function compareElementsPro(element) {
+                        return (element.title === production[i].title)
+                    }
+
+                    let indexPro = this.#Productions.findIndex(compareElementsPro);
+
+                    //Si la producción no está, la añade
+                    if (indexPro == -1) {
+                        this.addProduction(production[i])
+                    }
+
+                    //Si el director no está, lo añade antes de asignarle la producción
+                    if (indexDir == -1) {
+                        this.addDirector(director);
+                        indexDir = this.#Directors.length - 1;
+                        this.#Directors[indexDir].productions.push(production[i]);
+                    } else {
+                        this.#Directors[indexDir].productions.push(production[i]);
+                    }
                 }
 
                 return this.#Directors[indexDir].productions.length;
 
             }
 
-            //Método que desasignará una producción a un director
-            deassignDirector(director, production) {
+            //Método que desasignará una o más producciones a un director
+            deassignDirector(director, ...production) {
 
-                //Comprobaciones
+                //Comprobaciones del director
                 if(director === null) throw new InvalidValueException("director", director);
-                if(production === null) throw new InvalidValueException("production", production);
 
                 //Comprobamos si están registrados
                 function compareElementsDir(element) {
                     return (element.director.name === director.name)
-                }
-
-                function compareElementsPro(element) {
-                    return (element.title === production.title)
                 }
 
                 let indexDir = this.#Directors.findIndex(compareElementsDir);
@@ -1117,15 +1145,35 @@ let VideoSystem = (function () {
                     throw new DirectorDoesntExistException("director", director);
                 }
 
-                let indexPro = this.#Directors[indexDir].productions.findIndex(compareElementsPro);
+                //Recorremos las producciones para ver si son válidas y si están asignadas. Si alguna no lo está, excepción
+                for (let i = 0; i < production.length; i++) {
+                    if (production[i] === null) throw new InvalidValueException("production de posición " + i, production);
+                
+                    function compareElementsPro(element) {
+                        return (element.title === production[i].title)
+                    }
 
-                //Si la producción no está registrada, excepción
-                if (indexPro == -1) {
-                    throw new ProductionDoesntExistException("production", production);
+                    let indexPro = this.#Directors[indexDir].productions.findIndex(compareElementsPro);
+
+                    //Si la producción no está registrada, excepción
+                    if (indexPro == -1) {
+                        throw new ProductionDoesntExistException("production de posición " + i, production);
+                    }
                 }
 
-                //Desasignamos la producción
-                this.#Directors[indexDir].productions.splice(indexPro, 1);
+                //Volvemos a recorrerlas para desasignarlas
+                for (let i = 0; i < production.length; i++) {
+
+                    function compareElementsPro(element) {
+                        return (element.title === production[i].title)
+                    }
+
+                    let indexPro = this.#Directors[indexDir].productions.findIndex(compareElementsPro);
+
+                    //Desasignamos la producción
+                    this.#Directors[indexDir].productions.splice(indexPro, 1);
+
+                }
 
                 return this.#Directors[indexDir].productions.length;
 
@@ -1154,77 +1202,100 @@ let VideoSystem = (function () {
 
             }   
 
-            //Método que le asignará una producción a un actor
+            //Método que le asignará una o más producciones a un actor
             //Si el actor no existe, lo añade al sistema
             //Si la producción no existe, la añade al sistema
-            assignActor(actor, production) {
+            assignActor(actor, ...production) {
 
-                //Comprobaciones
+                //Comprobaciones del actor
                 if(actor === null) throw new InvalidValueException("actor", actor);
-                if(production === null) throw new InvalidValueException("production", production);
-
-                //Comprobamos que se encuentran registrados
+                
+                for (let i = 0; i < production.length; i++) {
+                    if(production[i] === null) throw new InvalidValueException("production de posición " + i, production[i]);
+                }
+                
+                //Comprobamos que se encuentra registrado
                 function compareElementsAct(element) {
                     return (element.actor.name === actor.name)
                 }
 
-                function compareElementsPro(element) {
-                    return (element.title === production.title)
-                }
-
                 let indexAct = this.#Actors.findIndex(compareElementsAct);
-                let indexPro = this.#Productions.findIndex(compareElementsPro);
 
-                //Si la producción no está registrada, la añade
-                if (indexPro == -1) {
-                    this.addProduction(production)
-                }
+                //Recorremos las producciones
+                for (let i = 0; i < production.length; i++) {
+                    function compareElementsPro(element) {
+                        return (element.title === production[i].title)
+                    }
 
-                //Si el actor no está registrado, lo añade antes de asignarle la producción
-                if (indexAct == -1) {
-                    this.addActor(actor);
-                    indexAct = this.#Actors.length - 1;
-                    this.#Actors[indexAct].productions.push(production);
-                } else {
-                    this.#Actors[indexAct].productions.push(production);
+                    let indexPro = this.#Productions.findIndex(compareElementsPro);
+
+                    //Si la producción no está registrada, la añade
+                    if (indexPro == -1) {
+                        this.addProduction(production[i])
+                    }
+
+                    //Si el actor no está registrado, lo añade antes de asignarle la producción
+                    if (indexAct == -1) {
+                        this.addActor(actor);
+                        indexAct = this.#Actors.length - 1;
+                        this.#Actors[indexAct].productions.push(production[i]);
+                    } else {
+                        this.#Actors[indexAct].productions.push(production[i]);
+                    }
+
                 }
 
                 return this.#Actors[indexAct].productions.length;
 
             }
 
-            //Método que desasignará una producción a un actor
-            deassignActor(actor, production) {
+            //Método que desasignará una o más producciones a un actor
+            deassignActor(actor, ...production) {
 
-                //Comprobaciones
-                if(actor === null) throw new InvalidValueException("actor", actor);
-                if(production === null) throw new InvalidValueException("production", production);
-
-                //Comprobamos que se encuentran registrados
-				function compareElementsAct(element) {
+                //Comprobaciones del actor
+                if (actor === null) throw new InvalidValueException("actor", actor);
+                
+                function compareElementsAct(element) {
 					return (element.actor.name === actor.name)
 				}
 
-                function compareElementsPro(element) {
-					return (element.title === production.title)
-				}
-
-				let indexAct = this.#Actors.findIndex(compareElementsAct);
-
+                let indexAct = this.#Actors.findIndex(compareElementsAct);
+                
                 //Si el actor no está registrado, excepción
                 if (indexAct == -1) {
                     throw new ActorDoesntExistException("actor", actor);
                 }
 
-                let indexPro = this.#Actors[indexAct].productions.findIndex(compareElementsPro);
+                //Recorremos las producciones para ver si son válidas y si están registradas. Si alguna no lo está, excepción
+                for (let i = 0; i < production.length; i++) {
+                    if (production[i] === null) throw new InvalidValueException("production de posición " + i, production);
 
-                //Si la producción no está registrada, excepción
-                if (indexPro == -1) {
-                    throw new ProductionDoesntExistException("production", production);
+
+                    function compareElementsPro(element) {
+                        return (element.title === production[i].title)
+                    }
+
+                    let indexPro = this.#Actors[indexAct].productions.findIndex(compareElementsPro);
+
+                    //Si la producción no está registrada, excepción
+                    if (indexPro == -1) {
+                        throw new ProductionDoesntExistException("production de posición " + i, production);
+                    }
                 }
 
-                //Desasignamos la producción
-                this.#Actors[indexAct].productions.splice(indexPro, 1);
+                //Volvemos a recorrerlas para desasignarlas
+                for (let i = 0; i < production.length; i++) {
+                
+                    function compareElementsPro(element) {
+                        return (element.title === production[i].title)
+                    }
+
+                    let indexPro = this.#Actors[indexAct].productions.findIndex(compareElementsPro);
+
+                    //Desasignamos la producción
+                    this.#Actors[indexAct].productions.splice(indexPro, 1);
+
+                }
 
                 return this.#Actors[indexAct].productions.length;
 

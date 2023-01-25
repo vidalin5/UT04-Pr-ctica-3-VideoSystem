@@ -438,23 +438,24 @@ try {
 //[Asignar/Desasignar Producciones a Categorías] >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 console.warn("ASIGNAR/DESASIGNAR PRODUCCIONES A CATEGORÍAS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
-//Le asignamos las producciones m1 y m2 a la categoría c1
-try {
-    console.log("Número de producciones asignadas a " + c1.name + ": " + vs.assignCategory(c1, m1));
-    console.log("Número de producciones asignadas a " + c1.name + ": " + vs.assignCategory(c1, m2));
-} catch(error) {
-    console.log(error);
-}
-
-console.warn("ASIGNAMOS PROUCCIÓN QUE NO EXISTE (LA AÑADE AL SISTEMA)");
-//Intentamos asignarle una producción que no existe. La añade al sistema
+//Le asignamos las producciones m1, m2 (EXISTEN) y m5 (NO EXISTE) a la categoría c1. m5 Debería registrarla
 try {
     let m5 = new Movie("El pianista", "EEUU", new Date("1994/11/05"), "Pianista", "www.urlimagenpiano.com", new Resource(140, "link1"), [new Coordinate(3301, 9779)]);
-    console.log("Número de producciones asignadas a " + c1.name + ": " + vs.assignCategory(c1, m5));
+    console.log("Número de producciones asignadas a " + c1.name + ": " + vs.assignCategory(c1, m1, m2, m5));
 } catch(error) {
     console.log(error);
 }
 
+console.warn("PRODUCCIONES DE: " + c1.name + " (categoría)")
+let generator = vs.getProductionsCategory(c1);
+
+let next;
+while (!(next = generator.next()).done) {
+   let pro = next.value;
+   console.log(pro.toString());
+}
+
+console.warn("TOTAL PRODUCCIONES");
 //Comprobamos que ha añadido la producción al total del sistema
 for (let pro of vs.Productions){
     console.log (">>> " + pro);
@@ -464,7 +465,7 @@ console.warn("ASIGNAMOS A CATEGORÍA QUE NO EXISTE (LA AÑADE AL SISTEMA)");
 //Intentamos asignarle una categoría que no existe. La añade al sistema
 try {
     var c7 = new Category("Musical", "Que trata situaciones de la vida en forma de musical");
-    console.log("Número de producciones asignadas a " + c7.name + ": " + vs.assignCategory(c7, s4));
+    console.log("Número de producciones asignadas a " + c7.name + ": " + vs.assignCategory(c7, s4, s1, m4));
 } catch(error) {
     console.log(error);
 }
@@ -486,17 +487,17 @@ while (!(next2 = generator2.next()).done) {
 console.warn("DESASIGNAMOS UNA PRODUCCIÓN");
 //Desasignamos una producción a una categoría
 try {
-    console.log("Número de producciones asignadas a " + c1.name + ": " + vs.deassignCategory(c1, m1));
+    console.log("Número de producciones asignadas a " + c1.name + ": " + vs.deassignCategory(c1, m1, m2));
 } catch(error) {
     console.log(error);
 }
 
 console.warn("PRODUCCIONES DE: " + c1.name + " (categoría)")
-let generator = vs.getProductionsCategory(c1);
+let generator18 = vs.getProductionsCategory(c1);
 
-let next;
-while (!(next = generator.next()).done) {
-   let pro = next.value;
+let next18;
+while (!(next18 = generator18.next()).done) {
+   let pro = next18.value;
    console.log(pro.toString());
 }
 
@@ -524,8 +525,8 @@ console.warn("ASIGNAR/DESASIGNAR PRODUCCIONES A DIRECTORES >>>>>>>>>>>>>>>>>>>>>
 
 //Le asignamos las producciones m3 y s2 al director d1
 try {
-    console.log("Número de producciones asignadas a " + d1.name + ": " + vs.assignDirector(d1, m3));
-    console.log("Número de producciones asignadas a " + d1.name + ": " + vs.assignDirector(d1, s2));
+    let m15 = new Movie("Viernes 13", "EEUU", new Date("2006/12/05"), "Película de terror", "www.urlimagenviernes.com", new Resource(140, "link1"), [new Coordinate(8644, 1555)]);
+    console.log("Número de producciones asignadas a " + d1.name + ": " + vs.assignDirector(d1, m3, s2));
 } catch(error) {
     console.log(error);
 }
@@ -572,7 +573,7 @@ for (let dir of vs.Directors){
 console.warn("DESASIGNACIÓN DE UNA PRODUCCIÓN");
 //Desasignamos una producción a u director
 try {
-    console.log("Número de producciones asignadas a " + d1.name + ": " + vs.deassignDirector(d1, m3));
+    console.log("Número de producciones asignadas a " + d1.name + ": " + vs.deassignDirector(d1, m3, s2));
 } catch(error) {
     console.log(error);
 }
@@ -611,8 +612,7 @@ console.warn("ASIGNAR/DESASIGNAR PRODUCCIONES A ACTORES >>>>>>>>>>>>>>>>>>>>>>>>
 
 //Le asignamos las producciones m2 y s1 al actor a3
 try {
-    console.log("Número de producciones asignadas a " + a3.name + ": " + vs.assignActor(a3, m2));
-    console.log("Número de producciones asignadas a " + a3.name + ": " + vs.assignActor(a3, s1));
+    console.log("Número de producciones asignadas a " + a3.name + ": " + vs.assignActor(a3, m2, s1));
 } catch(error) {
     console.log(error);
 }
@@ -668,7 +668,7 @@ for (let act of vs.Actors){
 console.warn("DESASIGNACIÓN DE UNA PRODUCCIÓN A ACTOR");
 //Desasignamos una producción a un actor
 try {
-    console.log("Número de producciones asignadas a " + a3.name + ": " + vs.deassignActor(a3, s1));
+    console.log("Número de producciones asignadas a " + a3.name + ": " + vs.deassignActor(a3, s1, m2));
 } catch(error) {
     console.log(error);
 }
