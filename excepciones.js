@@ -68,7 +68,7 @@ class CategoryAlreadyRegisteredException extends VideoSystemException {
 //Excepción de cursos que no existen. Extiende de VideoSystem
 class CategoryDoesntExistException extends VideoSystemException {
     constructor(param, value, fileName, lineNumber) {
-        super(`ERROR: La ${param} que intentas eliminar no existe. (${param}: ${value.name})`, fileName, lineNumber);
+        super(`ERROR: La ${param} no existe. (${param}: ${value.name})`, fileName, lineNumber);
         this.param = param;
         this.value = value;
         this.name = "CategoryDoesntExistException";

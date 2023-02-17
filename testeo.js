@@ -16,8 +16,8 @@ import {BaseException,
     ActorDoesntExistException,
     DirectorAlreadyRegisteredException,
     DirectorDoesntExistException} from './excepciones.js';
-import {Person, Category, Resource, Production, Movie, Serie, User, Coordinate} from './implementacion.js';
-import VideoSystem from './implementacion.js';
+import {Person, Category, Resource, Production, Movie, Serie, User, Coordinate} from './videoSystemModel.js';
+import VideoSystem from './videoSystemModel.js';
 
 //TESTEO
 console.warn("TESTEO")
@@ -699,3 +699,11 @@ try {
 } catch(error) {
     console.log(error);
 }
+
+/*let generator8 = vs.getProduccionesAleatorias();
+
+let next8;
+while (!(next8 = generator8.next()).done) {
+   let pro = next8.value;
+   console.log(pro.toString());
+}*/

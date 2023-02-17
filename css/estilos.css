@@ -1,0 +1,150 @@
+.btn-outline-success {
+    margin-right: 40px;
+}
+
+.navbar-nav {
+    margin-left: 50px;
+}
+
+main {
+    height: 1250px;
+}
+
+#categories {
+    margin-right: 30px;
+}
+
+#productions {
+    margin-top: 30px;
+    margin-right: 30px;
+    width: 700px;
+    margin: 0 auto;
+}
+
+.card {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    margin-left: 35px;
+    width: 550px;
+}
+
+.card-img-top {
+    height: 300px;
+}
+
+footer {
+    padding: 50px 0;
+}
+
+footer h5 {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+footer ul.list-unstyled {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+footer ul.list-unstyled li {
+    margin-bottom: 10px;
+}
+
+footer form .form-control {
+    border-radius: 10;
+}
+
+footer form button.btn {
+    border-radius: 10;
+}
+
+#dir-info {
+    width: 300px;
+    margin: 0 auto;
+}
+
+#act-info {
+    width: 300px;
+    margin: 0 auto;
+}
+
+#dir-info .card-img-top {
+    height: 350px;
+}
+
+#act-info .card-img-top {
+    height: 350px;
+}
+
+#pro-title-dir {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#pro-title-act {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#pro-title-cat {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#productions-act {
+    width: 800px;
+    margin: 0 auto;
+}
+
+#productions-dir {
+    width: 700px;
+    margin: 0 auto;
+}
+
+#productions-dir .card-img-top{
+    height: 400px;
+}
+
+#productions-cat {
+    margin-top: 20px;
+    width: 900px;
+    margin: 0 auto;
+}
+
+#production-info {
+    margin-top: 20px;
+    width: 400px;
+    margin: 0 auto;
+}
+
+#production-actors {
+    margin-top: 20px;
+    width: 350px;
+    margin: 0 auto;
+}
+
+#production-directors {
+    margin-top: 20px;
+    width: 250px;
+    margin: 0 auto;
+}
+
+#pro-title-directors {
+    text-align: center;
+    margin-top: 30px;
+}
+
+#pro-title-actors {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.actoresI {
+    height: 200px;
+}
+
+.directoresI {
+    height: 200px;
+    
+}

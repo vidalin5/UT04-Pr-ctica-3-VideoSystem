@@ -17,7 +17,7 @@ import {BaseException,
     DirectorAlreadyRegisteredException,
     DirectorDoesntExistException} from './excepciones.js';
 
-//IMPLEMENTACIÓN
+//MVC - MODELO
 
 //CLASE PERSON
 class Person {
@@ -109,9 +109,10 @@ class Category {
     //Atributos privados
     #name;
     #description;
+    #image;
 
     //Constructor
-    constructor(name, description) {
+    constructor(name, description, image) {
 
         //Para invocar con el operador new
         if (!new.target) throw new InvalidAccessConstructorException();
@@ -125,6 +126,7 @@ class Category {
 
         this.#name = name;
         this.#description = description;
+        this.#image = image;
     }
 
     //Getters y setters
@@ -142,6 +144,14 @@ class Category {
 
     set description(value) {
         this.#description = value;
+    }
+
+    get image() {
+        return this.#image;
+    }
+
+    set image(value) {
+        this.#image = value;
     }
 
     //Métodos
@@ -1322,7 +1332,102 @@ let VideoSystem = (function () {
                     yield pro;
                 }
 
-            }   
+            }
+
+            * getCastingActors(production) {
+
+                let arrayCasting = [];
+
+                for (let i = 0; i < this.#Actors.length; i++) {
+                    for (let j = 0; j < this.#Actors[i].productions.length; j++) {
+                        if (this.#Actors[i].productions[j].title === production.title) {
+                            arrayCasting.push(this.#Actors[i].actor);
+                        }
+                    }
+                }
+
+                for (let act of arrayCasting){
+                    yield act;
+                }
+
+            }
+
+            * getCastingDirectors(production) {
+                
+                let arrayCasting = [];
+
+                for (let i = 0; i < this.#Directors.length; i++) {
+                    for (let j = 0; j < this.#Directors[i].productions.length; j++) {
+                        if (this.#Directors[i].productions[j].title === production.title) {
+                            console.log(this.#Directors[i].productions[j].title);
+                            arrayCasting.push(this.#Directors[i].director);
+                        }
+                    }
+                }
+
+                for (let dir of arrayCasting){
+                    yield dir;
+                }
+
+            }
+
+            getCategory(title){
+				let position = this.#Categories.findIndex(x => x.category.name === title);
+				if (position === -1)
+					throw new CategoryDoesntExistException(new Category(title));
+				return this.#Categories[position].category;
+			}
+
+            getActor(title){
+				let position = this.#Actors.findIndex(x => x.actor.name === title);
+				if (position === -1)
+					throw new ActorDoesntExistException(new Person(title));
+				return this.#Actors[position].actor;
+			}
+
+            getDirector(title){
+				let position = this.#Directors.findIndex(x => x.director.name === title);
+				if (position === -1)
+					throw new DirectorDoesntExistException(new Person(title));
+				return this.#Directors[position].director;
+			}
+
+            getProduction(title) {
+                let position = this.#Productions.findIndex(x => x.title === title);
+                if (position === -1)
+                    throw new ProductionDoesntExistException;
+                return this.#Productions[position];
+            }
+
+            get ProductionsLength() {
+                return this.#Productions.length;
+            }
+
+            //ITERADOR QUDE DEVUELVE 3 PRODUCCIONES ALEATORIAS
+            get ProduccionesAleatorias() {
+
+            let arrayAleatorio = [];
+
+            while (arrayAleatorio.length < 3) {
+                let posicionAleatoria = Math.floor(Math.random() * this.ProductionsLength);
+                let production = this.#Productions[posicionAleatoria];
+                if (!arrayAleatorio.includes(production)) {
+                    arrayAleatorio.push(production);
+                }
+            }
+
+                //Devolvemos un objeto iterable con generador
+                return {
+                    *[Symbol.iterator]() {
+
+                        //Recorremos todos las las producciones
+                        for (let i = 0; i < arrayAleatorio.length; i++) {
+                            yield arrayAleatorio[i];
+                        }
+                    }
+                }	
+
+        }   
 
         }
 
