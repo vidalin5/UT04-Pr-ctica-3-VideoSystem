@@ -12,6 +12,10 @@ class VideoSystemView {
   init(Categories, RandomProductions) {
     this.main.empty();
 
+    let title = $(`<h1 id="categories-title">CATEGORÍAS</h1>`);
+
+    this.main.append(title);
+
     //Para cargar las categorías iniciales
     let container = $(`<div id="categories" class="card-group">
         </div>`);
@@ -29,6 +33,10 @@ class VideoSystemView {
     }
 
     this.main.append(container);
+
+    let title2 = $(`<h4 id="producciones-title">PRODUCCIONES</h4>`);
+
+    this.main.append(title2);
 
     //Para cargar las 3 producciones aleatorias iniciales
     let container2 = $(`<div id="productions" class="card-group">

@@ -23,6 +23,10 @@ class VideoSystemController {
         let s2 = new Serie("Los Soprano", "EEUU", new Date("1998/04/04"), "Peleas entre mafias", "img/lossoprano.jpg", [new Resource(52, "link1"), new Resource(52, "link2"), new Resource(52, "link3")], [new Coordinate(5675, 5555)], 7);
         let s3 = new Serie("The Wire", "EEUU", new Date("1988/05/12"), "Policiaca", "img/thewire.jpg", [new Resource(20, "link1"), new Resource(20, "link2"), new Resource(20, "link3")], [new Coordinate(4290, 7753)], 30);
         let s4 = new Serie("Breaking Bad", "EEUU", new Date("2008/12/01"), "Cocinar metanfetamina", "img/breakingbad.jpg", [new Resource(55, "link1"), new Resource(55, "link2"), new Resource(55, "link3")], [new Coordinate(2111, 2199), new Coordinate(8003, 8343)], 5);
+        let m5 = new Movie("El Dictador", "EEUU", new Date("2003/01/30"), "La Tierra Media", "img/eldictador.jpg", new Resource(175, "link1"), [new Coordinate(4132, 5124)]);
+        let m6 = new Movie("Scary Movie", "EEUU", new Date("2003/01/30"), "La Tierra Media", "img/scarymovie.jpg", new Resource(155, "link1"), [new Coordinate(2421, 1252)]);
+        let m7 = new Movie("Borat", "EEUU", new Date("2003/01/30"), "La Tierra Media", "img/borat.jpg", new Resource(200, "link1"), [new Coordinate(2212, 5122)]);
+        let m8 = new Movie("Ted", "EEUU", new Date("2003/01/30"), "La Tierra Media", "img/ted.jpg", new Resource(125, "link1"), [new Coordinate(4212, 3212)]);
     
         //Actores
         let a1 = new Person("Natalia", "Muñoz", "Pérez", new Date("1990/02/04"), "img/actor4.jpg");
@@ -30,6 +34,10 @@ class VideoSystemController {
         let a3 = new Person("Lucas", "Gómez", "Álvarez", new Date("1995/02/23"), "img/actor1.jpg");
         let a4 = new Person("Alberto", "Ibáñez", "López", new Date("2000/09/12"), "img/actor2.jpg");
         let a5 = new Person("Tomás", "Núñez", "Pérez", new Date("1973/12/12"), "img/actor3.jpg");
+        let a6 = new Person("Lucía", "Hervás", "Rodríguez", new Date("1960/12/24"), "img/actor6.jpg");
+        let a7 = new Person("Ana", "Muñoz", "Muñoz", new Date("1992/02/23"), "img/actor7.jpg");
+        let a8 = new Person("Ernesto", "Sevilla", "Egea", new Date("2000/09/12"), "img/actor8.jpg");
+        let a9 = new Person("Paco", "Martínez", "Pérez", new Date("1953/12/12"), "img/actor9.jpg");
 
         //Directores
         let d1 = new Person("Luis", "López", "Pérez", new Date("1960/01/04"), "img/director1.jpg");
@@ -41,25 +49,29 @@ class VideoSystemController {
         let us1 = new User("Alejandro5", "alejandro@gmail.com", "alex555");
 
         //Asignación de producciones a las categorías
-        this.#videoSystemModel.assignCategory(c1, m1, m2, s1, s4);
-        this.#videoSystemModel.assignCategory(c2, m3, m4, s2, s3);
-        this.#videoSystemModel.assignCategory(c3, m2, m4, s3, s1);
+        this.#videoSystemModel.assignCategory(c1, m1, m2, m3, m4);
+        this.#videoSystemModel.assignCategory(c2, m5, m6, m7, m8);
+        this.#videoSystemModel.assignCategory(c3, s1, s2, s3, s4);
 
         //Asignación de directores a las producciones
-        this.#videoSystemModel.assignDirector(d1, m1, s1);
-        this.#videoSystemModel.assignDirector(d2, m2, s2);
-        this.#videoSystemModel.assignDirector(d3, m3, s3);
-        this.#videoSystemModel.assignDirector(d4, m4, s4);
+        this.#videoSystemModel.assignDirector(d1, m1, s1, m5);
+        this.#videoSystemModel.assignDirector(d2, m2, s2, m6);
+        this.#videoSystemModel.assignDirector(d3, m3, s3, m7);
+        this.#videoSystemModel.assignDirector(d4, m4, s4, m8);
 
         //Asignación de actores a las producciones
-        this.#videoSystemModel.assignActor(a1, m1, s1);
-        this.#videoSystemModel.assignActor(a2, m1, s1);
-        this.#videoSystemModel.assignActor(a3, m2, s2);
-        this.#videoSystemModel.assignActor(a4, m2, s2);
-        this.#videoSystemModel.assignActor(a5, m3, s3);
-        this.#videoSystemModel.assignActor(a1, m3, s3);
-        this.#videoSystemModel.assignActor(a2, m4, s4);
-        this.#videoSystemModel.assignActor(a3, m4, s4);
+        this.#videoSystemModel.assignActor(a1, s1, m5);
+        this.#videoSystemModel.assignActor(a2, m1, s1, m6);
+        this.#videoSystemModel.assignActor(a3, m2, m7);
+        this.#videoSystemModel.assignActor(a4, s2, m8, s1);
+        this.#videoSystemModel.assignActor(a5, m3, m1, m8);
+        this.#videoSystemModel.assignActor(a1, m3, s3, m7);
+        this.#videoSystemModel.assignActor(a2, s2, m5);
+        this.#videoSystemModel.assignActor(a3, s4, m7, m6);
+        this.#videoSystemModel.assignActor(a6, m2, s2);
+        this.#videoSystemModel.assignActor(a7, m4, s3, m1);
+        this.#videoSystemModel.assignActor(a8, m4, s4);
+        this.#videoSystemModel.assignActor(a9, s4, s3, m6);
 
     }
 

@@ -7,7 +7,19 @@
 }
 
 main {
-    height: 1250px;
+    height: 1280px;
+}
+
+#categories-title {
+    margin-top: 10px;
+    color: grey;
+    text-align: center;
+}
+
+#producciones-title {
+    margin-top: 20px;
+    color: grey;
+    text-align: center;
 }
 
 #categories {
@@ -120,7 +132,7 @@ footer form button.btn {
 
 #production-actors {
     margin-top: 20px;
-    width: 350px;
+    width: 450px;
     margin: 0 auto;
 }
 
