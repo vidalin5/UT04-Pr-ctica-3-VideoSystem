@@ -201,7 +201,7 @@ class VideoSystemView {
     });
   }
 
-  
+
   //INFO Y PRODUCCIONES DE CADA DIRECTOR -------------------------------------------->
   directorInfo(productions, director) {
 
@@ -252,7 +252,7 @@ class VideoSystemView {
   }
 
   //INFO, ACTORES Y DIRECTORES DE CADA PRODUCCION -------------------------------------------->
-  productionInfo (production, actors, directors) {
+  productionInfo(production, actors, directors) {
 
     this.main.empty();
 
@@ -265,7 +265,7 @@ class VideoSystemView {
             </div>
           </div>
           </div>`);
-    
+
     this.main.append(container);
 
     let title = $(`<h1 id="pro-title-directors">Director</h1>`);

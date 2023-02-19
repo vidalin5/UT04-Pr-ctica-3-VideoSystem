@@ -1,4 +1,4 @@
-import {Category, Movie, Serie, Person, User, Resource, Coordinate} from "./videoSystemModel.js"
+import { Category, Movie, Serie, Person, User, Resource, Coordinate } from "./videoSystemModel.js"
 
 //MVC - CONTROLADOR
 class VideoSystemController {
@@ -27,7 +27,7 @@ class VideoSystemController {
         let m6 = new Movie("Scary Movie", "EEUU", new Date("2003/01/30"), "La Tierra Media", "img/scarymovie.jpg", new Resource(155, "link1"), [new Coordinate(2421, 1252)]);
         let m7 = new Movie("Borat", "EEUU", new Date("2003/01/30"), "La Tierra Media", "img/borat.jpg", new Resource(200, "link1"), [new Coordinate(2212, 5122)]);
         let m8 = new Movie("Ted", "EEUU", new Date("2003/01/30"), "La Tierra Media", "img/ted.jpg", new Resource(125, "link1"), [new Coordinate(4212, 3212)]);
-    
+
         //Actores
         let a1 = new Person("Natalia", "Muñoz", "Pérez", new Date("1990/02/04"), "img/actor4.jpg");
         let a2 = new Person("Alba", "García", "García", new Date("1980/12/24"), "img/actor5.jpg");
@@ -76,30 +76,30 @@ class VideoSystemController {
     }
 
     //Constructor con la vista y el modelo
-    constructor (videoSystemModel, videoSystemView) {
+    constructor(videoSystemModel, videoSystemView) {
         this.#videoSystemModel = videoSystemModel;
         this.#videoSystemView = videoSystemView;
 
         //Eventos iniciales del Controlador
-		this.onLoad();
+        this.onLoad();
         this.onInit();
 
 
         //Enlazamos handlers con la vista
-		this.#videoSystemView.bindInit(this.handleInit);
+        this.#videoSystemView.bindInit(this.handleInit);
     }
 
     //Función onload
     onLoad = () => {
-		this.#loadVideoSystemObjects();
+        this.#loadVideoSystemObjects();
         this.onAddActor();
         this.onAddDirector();
         this.onAddCategory();
-	}
+    }
 
     //Función de inicio
     onInit = () => {
-		this.#videoSystemView.init(this.#videoSystemModel.Categories, this.#videoSystemModel.ProduccionesAleatorias);
+        this.#videoSystemView.init(this.#videoSystemModel.Categories, this.#videoSystemModel.ProduccionesAleatorias);
         this.#videoSystemView.bindProductionsCategoryList(
             this.handleProductionsCategoryList
         );
@@ -109,12 +109,12 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionInfo(
             this.handleProductionInfo
         );
-	}
+    }
 
     //Handle para la función de inicio
     handleInit = () => {
-		this.onInit();
-	}
+        this.onInit();
+    }
 
     //Función para actores
     onAddActor = () => {

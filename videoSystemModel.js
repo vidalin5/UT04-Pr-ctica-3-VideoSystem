@@ -1,9 +1,10 @@
 "use strict";
-import {BaseException,
-	InvalidAccessConstructorException,
+import {
+    BaseException,
+    InvalidAccessConstructorException,
     AbstractClassException,
-	EmptyValueException,
-	InvalidValueException,
+    EmptyValueException,
+    InvalidValueException,
     VideoSystemException,
     CategoryAlreadyRegisteredException,
     CategoryDoesntExistException,
@@ -15,7 +16,8 @@ import {BaseException,
     ActorAlreadyRegisteredException,
     ActorDoesntExistException,
     DirectorAlreadyRegisteredException,
-    DirectorDoesntExistException} from './excepciones.js';
+    DirectorDoesntExistException
+} from './excepciones.js';
 
 //MVC - MODELO
 
@@ -41,11 +43,11 @@ class Person {
         if (!born) throw new EmptyValueException("born");
 
         //Validación de tipos
-        if(typeof name != "string") throw new InvalidValueException("name", name);
-        if(typeof lastname1 != "string") throw new InvalidValueException("lastname1", lastname1);
-        if(typeof lastname2 != "string") throw new InvalidValueException("lastname2", lastname2);
+        if (typeof name != "string") throw new InvalidValueException("name", name);
+        if (typeof lastname1 != "string") throw new InvalidValueException("lastname1", lastname1);
+        if (typeof lastname2 != "string") throw new InvalidValueException("lastname2", lastname2);
         if (!(born instanceof Date)) throw new InvalidValueException("born", born);
-        if(typeof picture != "string") throw new InvalidValueException("picture", picture);
+        if (typeof picture != "string") throw new InvalidValueException("picture", picture);
 
         this.#name = name;
         this.#lastname1 = lastname1;
@@ -97,7 +99,7 @@ class Person {
 
     //Métodos
     //toString
-    toString () {
+    toString() {
         return ` [PERSON] > Name: ${this.#name}, Lastname1: ${this.#lastname1}, Lastname2: ${this.#lastname2}, Born: ${this.#born}, Picture: ${this.#picture}`;
     }
 
@@ -121,8 +123,8 @@ class Category {
         if (!name) throw new EmptyValueException("name");
 
         //Validación de tipos
-        if(typeof name != "string") throw new InvalidValueException("name", name);
-        if(typeof description != "string") throw new InvalidValueException("description", description);
+        if (typeof name != "string") throw new InvalidValueException("name", name);
+        if (typeof description != "string") throw new InvalidValueException("description", description);
 
         this.#name = name;
         this.#description = description;
@@ -156,7 +158,7 @@ class Category {
 
     //Métodos
     //toString
-    toString () {
+    toString() {
         return ` [CATEGORY] > Name: ${this.#name}, Description: ${this.#description}`;
     }
 
@@ -180,8 +182,8 @@ class Resource {
         if (!link) throw new EmptyValueException("link");
 
         //Validación de tipos
-        if(typeof duration != "number") throw new InvalidValueException("duration", duration);
-        if(typeof link != "string") throw new InvalidValueException("link", link);
+        if (typeof duration != "number") throw new InvalidValueException("duration", duration);
+        if (typeof link != "string") throw new InvalidValueException("link", link);
 
         this.#duration = duration;
         this.#link = link;
@@ -206,7 +208,7 @@ class Resource {
 
     //Métodos
     //toString
-    toString () {
+    toString() {
         return ` [RESOURCE] > Duration: ${this.#duration}, Link: ${this.#link}`;
     }
 
@@ -236,11 +238,11 @@ class Production {
         if (!publication) throw new EmptyValueException("publication");
 
         //Validación de tipos
-        if(typeof title != "string") throw new InvalidValueException("title", title);
-        if(typeof nationality != "string") throw new InvalidValueException("nationality", nationality);
+        if (typeof title != "string") throw new InvalidValueException("title", title);
+        if (typeof nationality != "string") throw new InvalidValueException("nationality", nationality);
         if (!(publication instanceof Date)) throw new InvalidValueException("publication", publication);
-        if(typeof synopsis != "string") throw new InvalidValueException("synopsis", synopsis);
-        if(typeof image != "string") throw new InvalidValueException("image", image);
+        if (typeof synopsis != "string") throw new InvalidValueException("synopsis", synopsis);
+        if (typeof image != "string") throw new InvalidValueException("image", image);
 
         this.#title = title;
         this.#nationality = nationality;
@@ -292,7 +294,7 @@ class Production {
 
     //Métodos
     //toString
-    toString () {
+    toString() {
         return ` Title: ${this.#title}, Nationality: ${this.#nationality}, Publication: ${this.#publication}, Synopsis: ${this.#synopsis}, Image: ${this.#image}`;
     }
 
@@ -314,7 +316,7 @@ class Movie extends Production {
         //Validación de tipos
         if (!(resource instanceof Resource)) throw new InvalidValueException("resource", resource);
 
-        super (title, nationality, publication, synopsis, image);
+        super(title, nationality, publication, synopsis, image);
         this.#resource = resource;
         this.#locations = locations;
 
@@ -336,19 +338,19 @@ class Movie extends Production {
 
         //devolvemos un objeto iterable con generador.
         return {
-            * [Symbol.iterator](){
-            
+            *[Symbol.iterator]() {
+
                 //Recorremos todos los estudiantes admitidos
-                for (let i = 0; i < array.length; i++){
+                for (let i = 0; i < array.length; i++) {
                     yield array[i];
                 }
             }
-        }	
+        }
     }
 
     //Métodos
     //toString
-    toString () {
+    toString() {
         return ` [MOVIE] >` + super.toString() + ` Resource: ${this.#resource}, Locations: ${this.#locations}`;
     }
 
@@ -369,9 +371,9 @@ class Serie extends Production {
         if (!new.target) throw new InvalidAccessConstructorException();
 
         //Validación de tipos
-        if(typeof seasons != "number") throw new InvalidValueException("seasons", seasons);
+        if (typeof seasons != "number") throw new InvalidValueException("seasons", seasons);
 
-        super (title, nationality, publication, synopsis, image);
+        super(title, nationality, publication, synopsis, image);
         this.#resources = resources;
         this.#locations = locations;
         this.#seasons = seasons;
@@ -386,14 +388,14 @@ class Serie extends Production {
 
         //devolvemos un objeto iterable con generador.
         return {
-            * [Symbol.iterator](){
-            
+            *[Symbol.iterator]() {
+
                 //Recorremos todos los estudiantes admitidos
-                for (let i = 0; i < array.length; i++){
+                for (let i = 0; i < array.length; i++) {
                     yield array[i];
                 }
             }
-        }	
+        }
     }
 
     get locations() {
@@ -403,14 +405,14 @@ class Serie extends Production {
 
         //devolvemos un objeto iterable con generador.
         return {
-            * [Symbol.iterator](){
-            
+            *[Symbol.iterator]() {
+
                 //Recorremos todos los estudiantes admitidos
-                for (let i = 0; i < array.length; i++){
+                for (let i = 0; i < array.length; i++) {
                     yield array[i];
                 }
             }
-        }	
+        }
     }
 
     get seasons() {
@@ -423,7 +425,7 @@ class Serie extends Production {
 
     //Métodos
     //toString
-    toString () {
+    toString() {
         return ` [SERIE] >` + super.toString() + ` Resources: ${this.#resources}, Locations: ${this.#locations}, Seasons: ${this.#seasons}`;
     }
 
@@ -449,9 +451,9 @@ class User {
         if (!password) throw new EmptyValueException("password");
 
         //Validación de tipos
-        if(typeof username != "string") throw new InvalidValueException("username", username);
-        if(typeof email != "string") throw new InvalidValueException("email", email);
-        if(typeof password != "string") throw new InvalidValueException("password", password);
+        if (typeof username != "string") throw new InvalidValueException("username", username);
+        if (typeof email != "string") throw new InvalidValueException("email", email);
+        if (typeof password != "string") throw new InvalidValueException("password", password);
 
         this.#username = username;
         this.#email = email;
@@ -485,7 +487,7 @@ class User {
 
     //Métodos
     //toString
-    toString () {
+    toString() {
         return ` [USER] > Username: ${this.#username}, Email: ${this.#email}, Password: ${this.#password}`;
     }
 
@@ -509,8 +511,8 @@ class Coordinate {
         if (!longitude) throw new EmptyValueException("longitude");
 
         //Validación de tipos
-        if(typeof latitude != "number") throw new InvalidValueException("latitude", latitude);
-        if(typeof longitude != "number") throw new InvalidValueException("longitude", longitude);
+        if (typeof latitude != "number") throw new InvalidValueException("latitude", latitude);
+        if (typeof longitude != "number") throw new InvalidValueException("longitude", longitude);
 
         this.#latitude = latitude;
         this.#longitude = longitude;
@@ -536,7 +538,7 @@ class Coordinate {
 
     //Métodos
     //toString
-    toString () {
+    toString() {
         return ` [COORDINATE] > Latitude: ${this.#latitude}, Longitude: ${this.#longitude}`;
     }
 
@@ -545,7 +547,7 @@ class Coordinate {
 //Variable VideoSystem para almacenar la instancia
 let VideoSystem = (function () {
     let instantiated;
-    
+
     //Inicializamos el Singleton
     function init(Name) {
 
@@ -575,7 +577,7 @@ let VideoSystem = (function () {
             get Name() {
                 return this.#Name;
             }
-        
+
             set Name(value) {
                 if (!value) throw new EmptyValueException("Name");
                 this.#Name = value;
@@ -584,104 +586,104 @@ let VideoSystem = (function () {
             //Iterador de categorías
             get Categories() {
 
-				//Asignamos la referencia
-				let array = this.#Categories;
+                //Asignamos la referencia
+                let array = this.#Categories;
 
-				//Devolvemos un objeto iterable con generador
-				return {
-				  * [Symbol.iterator](){
+                //Devolvemos un objeto iterable con generador
+                return {
+                    *[Symbol.iterator]() {
 
-					//Recorremos todas las categorías
-					for (let i = 0; i < array.length; i++){
-					    yield array[i].category;
-					}
-				  }
-				}			  
-			}
+                        //Recorremos todas las categorías
+                        for (let i = 0; i < array.length; i++) {
+                            yield array[i].category;
+                        }
+                    }
+                }
+            }
 
             //Iterador de usuarios
             get Users() {
 
-				//Asignamos la referencia
-				let array = this.#Users;
+                //Asignamos la referencia
+                let array = this.#Users;
 
-				//Devolvemos un objeto iterable con generador
-				return {
-				  * [Symbol.iterator](){
+                //Devolvemos un objeto iterable con generador
+                return {
+                    *[Symbol.iterator]() {
 
-					//Recorremos todos los usuarios
-					for (let i = 0; i < array.length; i++){
-					    yield array[i];
-					}
-				  }
-				}			  
-			}
+                        //Recorremos todos los usuarios
+                        for (let i = 0; i < array.length; i++) {
+                            yield array[i];
+                        }
+                    }
+                }
+            }
 
             //Iterador de producciones
             get Productions() {
 
-				//Asignamos la referencia
-				let array = this.#Productions;
+                //Asignamos la referencia
+                let array = this.#Productions;
 
-				//Devolvemos un objeto iterable con generador
-				return {
-				  * [Symbol.iterator](){
+                //Devolvemos un objeto iterable con generador
+                return {
+                    *[Symbol.iterator]() {
 
-					//Recorremos todos las las producciones
-					for (let i = 0; i < array.length; i++){
-					    yield array[i];
-					}
-				  }
-				}			  
-			}
+                        //Recorremos todos las las producciones
+                        for (let i = 0; i < array.length; i++) {
+                            yield array[i];
+                        }
+                    }
+                }
+            }
 
             //Iterador de actores
             get Actors() {
 
-				//Asignamos la referencia
-				let array = this.#Actors;
+                //Asignamos la referencia
+                let array = this.#Actors;
 
-				//Devolvemos un objeto iterable con generador
-				return {
-				  * [Symbol.iterator](){
+                //Devolvemos un objeto iterable con generador
+                return {
+                    *[Symbol.iterator]() {
 
-					//Recorremos todos los actores
-					for (let i = 0; i < array.length; i++){
-					    yield array[i].actor;
-					}
-				  }
-				}			  
-			}
+                        //Recorremos todos los actores
+                        for (let i = 0; i < array.length; i++) {
+                            yield array[i].actor;
+                        }
+                    }
+                }
+            }
 
             //Iterador de directores
             get Directors() {
 
-				//Asignamos la referencia
-				let array = this.#Directors;
+                //Asignamos la referencia
+                let array = this.#Directors;
 
-				//Devolvemos un objeto iterable con generador
-				return {
-				  * [Symbol.iterator](){
+                //Devolvemos un objeto iterable con generador
+                return {
+                    *[Symbol.iterator]() {
 
-					//Recorremos todos los directores
-					for (let i = 0; i < array.length; i++){
-					    yield array[i].director;
-					}
-				  }
-				}			  
-			}
+                        //Recorremos todos los directores
+                        for (let i = 0; i < array.length; i++) {
+                            yield array[i].director;
+                        }
+                    }
+                }
+            }
 
             //Métodos
             //Método que añade una categoría nueva al sistema
             addCategory(category) {
 
                 //Comprobamos el valor
-                if(category === null) throw new InvalidValueException("category", category);
+                if (category === null) throw new InvalidValueException("category", category);
                 if (!(category instanceof Category)) throw new InvalidValueException("category", category);
 
                 //Comprobamos si se encuentra ya o no
                 let index = -1;
-                for (let cat of this.#Categories){
+                for (let cat of this.#Categories) {
                     if (cat.category.name === category.name) {
                         index = 1;
                     }
@@ -693,9 +695,9 @@ let VideoSystem = (function () {
                 } else {
                     this.#Categories.push(
                         {
-							category: category,
-							productions: []
-						}
+                            category: category,
+                            productions: []
+                        }
                     );
                 }
 
@@ -707,12 +709,12 @@ let VideoSystem = (function () {
             removeCategory(category) {
 
                 //Comprobaciones
-                if(category === null) throw new InvalidValueException("category", category);
+                if (category === null) throw new InvalidValueException("category", category);
                 if (!(category instanceof Category)) throw new InvalidValueException("category", category);
 
                 //Comprobamos si se encuentra ya o no
                 let index = -1;
-                for (let cat of this.#Categories){
+                for (let cat of this.#Categories) {
                     if (cat.category.name === category.name) {
                         index = 1;
                     }
@@ -738,11 +740,11 @@ let VideoSystem = (function () {
             addUser(user) {
 
                 //Comprobamos el valor
-                if(user === null) throw new InvalidValueException("user", user);
+                if (user === null) throw new InvalidValueException("user", user);
                 if (!(user instanceof User)) throw new InvalidValueException("user", user);
 
                 //Comprobamos si está ya registrado
-                for (let us of this.#Users){
+                for (let us of this.#Users) {
                     if (us.username === user.username) {
                         throw new UsernameAlreadyRegisteredException("username", user);
                     }
@@ -763,12 +765,12 @@ let VideoSystem = (function () {
             removeUser(user) {
 
                 //Comprobamos el valor
-                if(user === null) throw new InvalidValueException("user", user);
+                if (user === null) throw new InvalidValueException("user", user);
                 if (!(user instanceof User)) throw new InvalidValueException("user", user);
 
                 //Comprobamos si se encuentra ya o no
                 let index = -1;
-                for (let us of this.#Users){
+                for (let us of this.#Users) {
                     if (us.username === user.username) {
                         index = 1;
                     }
@@ -794,11 +796,11 @@ let VideoSystem = (function () {
             addProduction(production) {
 
                 //Comprobamos el valor
-                if(production === null) throw new InvalidValueException("production", production);
+                if (production === null) throw new InvalidValueException("production", production);
                 if (!(production instanceof Production)) throw new InvalidValueException("production", production);
 
                 //Comprobamos que no esté
-                for (let pro of this.#Productions){
+                for (let pro of this.#Productions) {
                     if (pro.title === production.title) {
                         throw new ProductionAlreadyRegisteredException("production", production);
                     }
@@ -815,12 +817,12 @@ let VideoSystem = (function () {
             removeProduction(production) {
 
                 //Comprobamos el valor
-                if(production === null) throw new InvalidValueException("production", production);
+                if (production === null) throw new InvalidValueException("production", production);
                 if (!(production instanceof Production)) throw new InvalidValueException("production", production);
 
                 //Comprobamos si se encuentra ya o no
                 let index = -1;
-                for (let pro of this.#Productions){
+                for (let pro of this.#Productions) {
                     if (pro.title === production.title) {
                         index = 1;
                     }
@@ -846,12 +848,12 @@ let VideoSystem = (function () {
             addActor(actor) {
 
                 //Comprobamos el valor
-                if(actor === null) throw new InvalidValueException("actor", actor);
+                if (actor === null) throw new InvalidValueException("actor", actor);
                 if (!(actor instanceof Person)) throw new InvalidValueException("actor", actor);
 
                 //Comprobamos si se encuentra ya o no
                 let index = -1;
-                for (let act of this.#Actors){
+                for (let act of this.#Actors) {
                     if (act.actor.name === actor.name) {
                         index = 1;
                     }
@@ -863,9 +865,9 @@ let VideoSystem = (function () {
                 } else {
                     this.#Actors.push(
                         {
-							actor: actor,
-							productions: []
-						}
+                            actor: actor,
+                            productions: []
+                        }
                     );
                 }
 
@@ -877,12 +879,12 @@ let VideoSystem = (function () {
             removeActor(actor) {
 
                 //Comprobaciones
-                if(actor === null) throw new InvalidValueException("actor", actor);
+                if (actor === null) throw new InvalidValueException("actor", actor);
                 if (!(actor instanceof Person)) throw new InvalidValueException("actor", actor);
 
                 //Comprobamos si se encuentra ya o no
                 let index = -1;
-                for (let act of this.#Actors){
+                for (let act of this.#Actors) {
                     if (act.actor.name === actor.name) {
                         index = 1;
                     }
@@ -908,12 +910,12 @@ let VideoSystem = (function () {
             addDirector(director) {
 
                 //Comprobamos el valor
-                if(director === null) throw new InvalidValueException("director", director);
+                if (director === null) throw new InvalidValueException("director", director);
                 if (!(director instanceof Person)) throw new InvalidValueException("director", director);
 
                 //Comprobamos si se encuentra ya o no
                 let index = -1;
-                for (let dir of this.#Directors){
+                for (let dir of this.#Directors) {
                     if (dir.director.name === director.name) {
                         index = 1;
                     }
@@ -925,9 +927,9 @@ let VideoSystem = (function () {
                 } else {
                     this.#Directors.push(
                         {
-							director: director,
-							productions: []
-						}
+                            director: director,
+                            productions: []
+                        }
                     );
                 }
 
@@ -939,12 +941,12 @@ let VideoSystem = (function () {
             removeDirector(director) {
 
                 //Comprobaciones
-                if(director === null) throw new InvalidValueException("director", director);
+                if (director === null) throw new InvalidValueException("director", director);
                 if (!(director instanceof Person)) throw new InvalidValueException("director", director);
 
                 //Comprobamos si se encuentra ya o no
                 let index = -1;
-                for (let dir of this.#Directors){
+                for (let dir of this.#Directors) {
                     if (dir.director.name === director.name) {
                         index = 1;
                     }
@@ -972,16 +974,16 @@ let VideoSystem = (function () {
             assignCategory(category, ...production) {
 
                 //Comprobaciones de la categoría
-                if(category === null) throw new InvalidValueException("category", category);
-                
+                if (category === null) throw new InvalidValueException("category", category);
+
                 for (let i = 0; i < production.length; i++) {
                     if (production[i] === null) throw new InvalidValueException("production de posición " + i, production[i]);
                 }
 
                 //Comprobamos si está registrada o no
-				function compareElementsCat(element) {
-					return (element.category.name === category.name)
-				}
+                function compareElementsCat(element) {
+                    return (element.category.name === category.name)
+                }
 
                 let indexCat = this.#Categories.findIndex(compareElementsCat);
 
@@ -1022,8 +1024,8 @@ let VideoSystem = (function () {
                 if (category === null) throw new InvalidValueException("category", category);
 
                 function compareElementsCat(element) {
-					return (element.category.name === category.name)
-				}
+                    return (element.category.name === category.name)
+                }
 
                 let indexCat = this.#Categories.findIndex(compareElementsCat);
 
@@ -1031,7 +1033,7 @@ let VideoSystem = (function () {
                 if (indexCat == -1) {
                     throw new CategoryDoesntExistException("category", category);
                 }
-                
+
                 //Recorremos todas las producciones para comprobar si son válidas y si están asignadas. Si alguna no lo está, salta excepción
                 for (let i = 0; i < production.length; i++) {
                     if (production[i] === null) throw new InvalidValueException("production de posición " + i, production[i]);
@@ -1056,7 +1058,7 @@ let VideoSystem = (function () {
                     }
 
                     let indexPro = this.#Categories[indexCat].productions.findIndex(compareElementsPro);
-                
+
                     //La eliminamos
                     this.#Categories[indexCat].productions.splice(indexPro, 1);
 
@@ -1070,24 +1072,24 @@ let VideoSystem = (function () {
             * getProductionsCategory(category) {
 
                 //Comprobaciones
-                if(category === null) throw new InvalidValueException("category", category);
+                if (category === null) throw new InvalidValueException("category", category);
 
                 //Comprobamos si la categoría existe
                 function compareElements(element) {
-					return (element.category.name === category.name)
-				}
+                    return (element.category.name === category.name)
+                }
 
-				let categoryPosition = this.#Categories.findIndex(compareElements);
+                let categoryPosition = this.#Categories.findIndex(compareElements);
 
                 //Si no existe, excepción
                 if (categoryPosition === -1) throw new CategoryDoesntExistException("category", category);
 
                 //Devolvemos cada producción de esa categoría
-                for (let pro of this.#Categories[categoryPosition].productions){
+                for (let pro of this.#Categories[categoryPosition].productions) {
                     yield pro;
                 }
 
-			}
+            }
 
             //Método que le asignará una o más producciones a un director
             //Si el director no existe, lo añade al sistema
@@ -1095,10 +1097,10 @@ let VideoSystem = (function () {
             assignDirector(director, ...production) {
 
                 //Comprobaciones del director
-                if(director === null) throw new InvalidValueException("director", director);
-                
+                if (director === null) throw new InvalidValueException("director", director);
+
                 for (let i = 0; i < production.length; i++) {
-                    if(production[i] === null) throw new InvalidValueException("production de posición " + i, production[i]);
+                    if (production[i] === null) throw new InvalidValueException("production de posición " + i, production[i]);
                 }
 
                 //Comprobamos si está registrado o no
@@ -1141,7 +1143,7 @@ let VideoSystem = (function () {
             deassignDirector(director, ...production) {
 
                 //Comprobaciones del director
-                if(director === null) throw new InvalidValueException("director", director);
+                if (director === null) throw new InvalidValueException("director", director);
 
                 //Comprobamos si están registrados
                 function compareElementsDir(element) {
@@ -1158,7 +1160,7 @@ let VideoSystem = (function () {
                 //Recorremos las producciones para ver si son válidas y si están asignadas. Si alguna no lo está, excepción
                 for (let i = 0; i < production.length; i++) {
                     if (production[i] === null) throw new InvalidValueException("production de posición " + i, production);
-                
+
                     function compareElementsPro(element) {
                         return (element.title === production[i].title)
                     }
@@ -1193,7 +1195,7 @@ let VideoSystem = (function () {
             * getProductionsDirector(director) {
 
                 //Comprobaciones
-                if(director === null) throw new InvalidValueException("director", director);
+                if (director === null) throw new InvalidValueException("director", director);
 
                 //Comprobamos que ese director está registrado
                 function compareElements(element) {
@@ -1206,11 +1208,11 @@ let VideoSystem = (function () {
                 if (directorPosition === -1) throw new DirectorDoesntExistException("director", director);
 
                 //Recorremos todas las producciones de ese director
-                for (let pro of this.#Directors[directorPosition].productions){
+                for (let pro of this.#Directors[directorPosition].productions) {
                     yield pro;
                 }
 
-            }   
+            }
 
             //Método que le asignará una o más producciones a un actor
             //Si el actor no existe, lo añade al sistema
@@ -1218,12 +1220,12 @@ let VideoSystem = (function () {
             assignActor(actor, ...production) {
 
                 //Comprobaciones del actor
-                if(actor === null) throw new InvalidValueException("actor", actor);
-                
+                if (actor === null) throw new InvalidValueException("actor", actor);
+
                 for (let i = 0; i < production.length; i++) {
-                    if(production[i] === null) throw new InvalidValueException("production de posición " + i, production[i]);
+                    if (production[i] === null) throw new InvalidValueException("production de posición " + i, production[i]);
                 }
-                
+
                 //Comprobamos que se encuentra registrado
                 function compareElementsAct(element) {
                     return (element.actor.name === actor.name)
@@ -1264,13 +1266,13 @@ let VideoSystem = (function () {
 
                 //Comprobaciones del actor
                 if (actor === null) throw new InvalidValueException("actor", actor);
-                
+
                 function compareElementsAct(element) {
-					return (element.actor.name === actor.name)
-				}
+                    return (element.actor.name === actor.name)
+                }
 
                 let indexAct = this.#Actors.findIndex(compareElementsAct);
-                
+
                 //Si el actor no está registrado, excepción
                 if (indexAct == -1) {
                     throw new ActorDoesntExistException("actor", actor);
@@ -1295,7 +1297,7 @@ let VideoSystem = (function () {
 
                 //Volvemos a recorrerlas para desasignarlas
                 for (let i = 0; i < production.length; i++) {
-                
+
                     function compareElementsPro(element) {
                         return (element.title === production[i].title)
                     }
@@ -1315,7 +1317,7 @@ let VideoSystem = (function () {
             * getProductionsActor(actor) {
 
                 //Comprobaciones
-                if(actor === null) throw new InvalidValueException("actor", actor);
+                if (actor === null) throw new InvalidValueException("actor", actor);
 
                 //Comprobamos que se encuentra registrado
                 function compareElements(element) {
@@ -1328,12 +1330,13 @@ let VideoSystem = (function () {
                 if (actorPosition === -1) throw new ActorDoesntExistException("actor", actor);
 
                 //Recorremos todas las producciones de ese actor
-                for (let pro of this.#Actors[actorPosition].productions){
+                for (let pro of this.#Actors[actorPosition].productions) {
                     yield pro;
                 }
 
             }
 
+            //Iterador para recorrer los actores de una producción
             * getCastingActors(production) {
 
                 let arrayCasting = [];
@@ -1346,14 +1349,15 @@ let VideoSystem = (function () {
                     }
                 }
 
-                for (let act of arrayCasting){
+                for (let act of arrayCasting) {
                     yield act;
                 }
 
             }
 
+            //Iterador para recorrer los directores de una producción
             * getCastingDirectors(production) {
-                
+
                 let arrayCasting = [];
 
                 for (let i = 0; i < this.#Directors.length; i++) {
@@ -1365,33 +1369,37 @@ let VideoSystem = (function () {
                     }
                 }
 
-                for (let dir of arrayCasting){
+                for (let dir of arrayCasting) {
                     yield dir;
                 }
 
             }
 
-            getCategory(title){
-				let position = this.#Categories.findIndex(x => x.category.name === title);
-				if (position === -1)
-					throw new CategoryDoesntExistException(new Category(title));
-				return this.#Categories[position].category;
-			}
+            //Método que nos devuelve una categoría pasándole el título
+            getCategory(title) {
+                let position = this.#Categories.findIndex(x => x.category.name === title);
+                if (position === -1)
+                    throw new CategoryDoesntExistException(new Category(title));
+                return this.#Categories[position].category;
+            }
 
-            getActor(title){
-				let position = this.#Actors.findIndex(x => x.actor.name === title);
-				if (position === -1)
-					throw new ActorDoesntExistException(new Person(title));
-				return this.#Actors[position].actor;
-			}
+            //Método que nos devuelve un actor pasándole el nombre
+            getActor(title) {
+                let position = this.#Actors.findIndex(x => x.actor.name === title);
+                if (position === -1)
+                    throw new ActorDoesntExistException(new Person(title));
+                return this.#Actors[position].actor;
+            }
 
-            getDirector(title){
-				let position = this.#Directors.findIndex(x => x.director.name === title);
-				if (position === -1)
-					throw new DirectorDoesntExistException(new Person(title));
-				return this.#Directors[position].director;
-			}
+            //Método que nos devuelve un director pasándole el nombre
+            getDirector(title) {
+                let position = this.#Directors.findIndex(x => x.director.name === title);
+                if (position === -1)
+                    throw new DirectorDoesntExistException(new Person(title));
+                return this.#Directors[position].director;
+            }
 
+            //Método que nos devuelve una producción pasándole el nombre
             getProduction(title) {
                 let position = this.#Productions.findIndex(x => x.title === title);
                 if (position === -1)
@@ -1406,15 +1414,15 @@ let VideoSystem = (function () {
             //ITERADOR QUDE DEVUELVE 3 PRODUCCIONES ALEATORIAS
             get ProduccionesAleatorias() {
 
-            let arrayAleatorio = [];
+                let arrayAleatorio = [];
 
-            while (arrayAleatorio.length < 3) {
-                let posicionAleatoria = Math.floor(Math.random() * this.ProductionsLength);
-                let production = this.#Productions[posicionAleatoria];
-                if (!arrayAleatorio.includes(production)) {
-                    arrayAleatorio.push(production);
+                while (arrayAleatorio.length < 3) {
+                    let posicionAleatoria = Math.floor(Math.random() * this.ProductionsLength);
+                    let production = this.#Productions[posicionAleatoria];
+                    if (!arrayAleatorio.includes(production)) {
+                        arrayAleatorio.push(production);
+                    }
                 }
-            }
 
                 //Devolvemos un objeto iterable con generador
                 return {
@@ -1425,9 +1433,9 @@ let VideoSystem = (function () {
                             yield arrayAleatorio[i];
                         }
                     }
-                }	
+                }
 
-        }   
+            }
 
         }
 
@@ -1435,7 +1443,7 @@ let VideoSystem = (function () {
         let vs = new VideoSystem(Name);
         Object.freeze(vs)
         return vs;
-           
+
     }
 
     return {
@@ -1458,6 +1466,6 @@ let VideoSystem = (function () {
 })();
 
 
-export {Person, Category, Resource, Production, Movie, Serie, User, Coordinate};
+export { Person, Category, Resource, Production, Movie, Serie, User, Coordinate };
 
 export default VideoSystem;
