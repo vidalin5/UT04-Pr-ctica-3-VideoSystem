@@ -3,10 +3,19 @@ import VideoSystem from "./videoSystemModel.js";
 //MVC - VISTA
 class VideoSystemView {
 
+  #excecuteHandler(
+    handler, handlerArguments, scrollElement, data, url, event) {
+    handler(...handlerArguments);
+    $(scrollElement).get(0).scrollIntoView();
+    history.pushState(data, null, url);
+    event.preventDefault();
+  }
+
   constructor() {
     this.main = $('main');
     this.menu = $('.navbar-nav');
     this.categories = $('#categories');
+    this.productionWindow = null;
   }
 
   init(Categories, RandomProductions) {
@@ -264,6 +273,9 @@ class VideoSystemView {
               <p class="card-text">${production.synopsis}.</p>
             </div>
           </div>
+          </div>
+          <div class="cart mt-4 align-items-center">
+          <button id="p-open" data-title="${production.title}" class="btn btn-primary text-uppercase mr-2 px-4">Abrir en nueva ventana</button>
           </div>`);
 
     this.main.append(container);
@@ -311,6 +323,7 @@ class VideoSystemView {
     }
 
     this.main.append(container3);
+
   }
 
   //Bind para el click en las producciones por toda la página
@@ -328,6 +341,99 @@ class VideoSystemView {
       handler(this.dataset.production);
     });
   }
+
+
+  //INFO, ACTORES Y DIRECTORES DE CADA PRODUCCION EN UNA VENTANA NUEVA -------------------------------------------->
+  productionInfoInNewWindow(production, actors, directors) {
+
+    let main = $(this.productionWindow.document).find('main');
+    let header = $(this.productionWindow.document).find('header nav');
+
+    main.empty();
+    header.empty();
+
+    this.productionWindow.document.title = `${production.title}`;
+
+    header.append(`<h1 data-title="${production.title}" class="display5">${production.title}</h1>`);
+
+    let container = $(`<div id="production-info" class="card-group">
+    <div class="card">
+        <img src="${production.image}" class="card-img-top productionI" alt="${production.title}">
+        <div class="card-body">
+          <h5 class="card-title">${production.title}</h5>
+          <p class="card-text">${production.synopsis}.</p>
+        </div>
+      </div>
+      </div>
+      </div>`);
+
+    main.append(container);
+
+    let title = $(`<h1 id="pro-title-directors">Director</h1>`);
+
+    main.append(title);
+
+    let container2 = $(`<div id="production-directors" class="card-group">
+    </div>`);
+    let director = directors.next();
+    while (!director.done) {
+      let div = $(`<div class="card">
+      <img src="${director.value.picture}" class="card-img-top directoresI" alt="${director.value.name}">
+      <div class="card-body">
+        <h5 class="card-title">${director.value.name} ${director.value.lastname1} ${director.value.lastname2}</h5>
+      </div>
+    </div>`);
+      container2.append(div);
+      director = directors.next();
+    }
+
+    main.append(container2);
+
+    let title2 = $(`<h1 id="pro-title-actors">Actores</h1>`);
+
+    main.append(title2);
+
+    let container3 = $(`<div id="production-actors" class="card-group">
+    </div>`);
+    let actor = actors.next();
+    while (!actor.done) {
+      let div = $(`<div class="card">
+          <img src="${actor.value.picture}" class="card-img-top actoresI" alt="${actor.value.name}">
+          <div class="card-body">
+            <h5 class="card-title">${actor.value.name} ${actor.value.lastname1} ${actor.value.lastname2}</h5>
+          </div>
+        </div>`);
+      container3.append(div);
+      actor = actors.next();
+    }
+
+    main.append(container3);
+
+    let cerrar = $(`<button class="btn btn-primary text-uppercase m-2 px4" onClick="window.close()">Cerrar</button>)`);
+
+    main.append(cerrar);
+
+    this.productionWindow.document.body.scrollIntoView();
+
+  }
+
+  bindShowProductionInNewWindow(handler) {
+    $('#p-open').click((event) => {
+      if (!this.productionWindow || this.productionWindow.closed) {
+        this.productionWindow = window.open("production.html", "ProductionWindow",
+          "width=800, height=600, top=250, left=250, titlebar=yes, toolbar=no, menubar = no, location = no");
+            this.productionWindow.addEventListener('DOMContentLoaded', () => {
+            handler(event.target.dataset.title)
+          });
+      } else {
+        if ($(this.productionWindow.document).find('header nav h1').get(0).dataset.title !== event.target.dataset.title){handler(event.target.dataset.title);
+      }
+      this.productionWindow.focus();
+    }
+});
+}
+
+
 
   //Bind para el click en los actores fuera del menú de navegación
   bindProductionsActorListOutsideMenu(handler) {

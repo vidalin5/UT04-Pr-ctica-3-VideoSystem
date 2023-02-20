@@ -1363,7 +1363,6 @@ let VideoSystem = (function () {
                 for (let i = 0; i < this.#Directors.length; i++) {
                     for (let j = 0; j < this.#Directors[i].productions.length; j++) {
                         if (this.#Directors[i].productions[j].title === production.title) {
-                            console.log(this.#Directors[i].productions[j].title);
                             arrayCasting.push(this.#Directors[i].director);
                         }
                     }

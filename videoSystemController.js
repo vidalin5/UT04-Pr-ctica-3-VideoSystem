@@ -177,6 +177,15 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionsDirectorListOutsideMenu(
             this.handleProductionsDirectorList
         );
+        this.#videoSystemView.bindShowProductionInNewWindow(
+            this.handleProductionInfoInNewWindow
+        );
+    }
+
+    //Handle para la navegación de producciones en nuevas ventanas
+    handleProductionInfoInNewWindow = (title) => {
+        let production = this.#videoSystemModel.getProduction(title);
+        this.#videoSystemView.productionInfoInNewWindow(production, this.#videoSystemModel.getCastingActors(production), this.#videoSystemModel.getCastingDirectors(production));
     }
 
 
