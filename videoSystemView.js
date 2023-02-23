@@ -3,8 +3,9 @@ import VideoSystem from "./videoSystemModel.js";
 //MVC - VISTA
 class VideoSystemView {
 
-  #excecuteHandler(
-    handler, handlerArguments, scrollElement, data, url, event) {
+  totalWindows = [];
+
+  #excecuteHandler(handler, handlerArguments, scrollElement, data, url, event) {
     handler(...handlerArguments);
     $(scrollElement).get(0).scrollIntoView();
     history.pushState(data, null, url);
@@ -19,6 +20,7 @@ class VideoSystemView {
   }
 
   init(Categories, RandomProductions) {
+
     this.main.empty();
 
     let title = $(`<h1 id="categories-title">CATEGORÍAS</h1>`);
@@ -65,6 +67,10 @@ class VideoSystemView {
 
     this.main.append(container2);
 
+    //let botonCerrar = $(`<button class="btn btn-primary text-uppercase m-2 px4" onClick="closeAll()">Cerrar todas las ventanas</button>)`);
+
+    //this.main.append(botonCerrar);
+
   }
 
   //Actores en el menú
@@ -78,7 +84,7 @@ class VideoSystemView {
     //if (!category.done) shopping
     for (let actor of Actors) {
       container.append(`<a data-actor="${actor.name}"
-      class="dropdown-item" href="#actor">${actor.name} ${actor.lastname1} ${actor.lastname2}</a>`);
+      class="dropdown-item" href="#">${actor.name} ${actor.lastname1} ${actor.lastname2}</a>`);
     }
     li.append(container);
     this.menu.append(li);
@@ -95,7 +101,7 @@ class VideoSystemView {
     //if (!category.done) shopping
     for (let director of Directors) {
       container.append(`<a data-director="${director.name}"
-      class="dropdown-item" href="#director">${director.name} ${director.lastname1} ${director.lastname2}</a>`);
+      class="dropdown-item" href="#">${director.name} ${director.lastname1} ${director.lastname2}</a>`);
     }
     li.append(container);
     this.menu.append(li);
@@ -112,7 +118,7 @@ class VideoSystemView {
     //if (!category.done) shopping
     for (let category of Categories) {
       container.append(`<a data-category="${category.name}"
-        class="dropdown-item" id="item-category" href="#categoria">${category.name}</a>`);
+        class="dropdown-item" id="item-category" href="#">${category.name}</a>`);
     }
     li.append(container);
     this.menu.append(li);
@@ -150,14 +156,26 @@ class VideoSystemView {
 
   //Los bind para el click en las categorías o en el menú de navegación
   bindProductionsCategoryList(handler) {
-    $('#categories').find('a').click(function (event) {
-      handler(this.dataset.category);
-    });
+		$('#categories').find('a').click((event) => {
+			let category = $(event.target).closest($('a')).get(0).dataset.category;
+			this.#excecuteHandler(
+				handler, [category],
+				'#pro-title-cat',
+				{action: 'productionsCategoryList', category: category},
+				'#categories', event
+			);
+		});
   }
   bindProductionsCategoryListInMenu(handler) {
-    $('#navCategories').next().children().click(function (event) {
-      handler(this.dataset.category);
-    });
+		$('#navCategories').next().children().click((event) => {
+			let category = $(event.target).closest($('a')).get(0).dataset.category;
+			this.#excecuteHandler(
+				handler, [category],
+				'#pro-title-cat',
+				{action: 'productionsCategoryList', category: category},
+				'#navCategories', event
+			);
+		});
   }
 
   //INFO Y PRODUCCIONES DE CADA ACTOR -------------------------------------------->
@@ -205,9 +223,15 @@ class VideoSystemView {
 
   //Bind para el click en los actores del menú de navegación
   bindProductionsActorListInMenu(handler) {
-    $('#navActors').next().children().click(function (event) {
-      handler(this.dataset.actor);
-    });
+		$('#navActors').next().children().click((event) => {
+			let actor = $(event.target).closest($('a')).get(0).dataset.actor;
+			this.#excecuteHandler(
+				handler, [actor],
+				'#act-info',
+				{action: 'productionsActorList', actor: actor},
+				'#navActors', event
+			);
+		});
   }
 
 
@@ -255,9 +279,15 @@ class VideoSystemView {
 
   //Bind para el click de los directores en el menú de navegación
   bindProductionsDirectorListInMenu(handler) {
-    $('#navDirectors').next().children().click(function (event) {
-      handler(this.dataset.director);
-    });
+		$('#navDirectors').next().children().click((event) => {
+			let director = $(event.target).closest($('a')).get(0).dataset.director;
+			this.#excecuteHandler(
+				handler, [director],
+				'#dir-info',
+				{action: 'productionsDirectorList', director: director},
+				'#navDirectors', event
+			);
+		});
   }
 
   //INFO, ACTORES Y DIRECTORES DE CADA PRODUCCION -------------------------------------------->
@@ -270,11 +300,13 @@ class VideoSystemView {
             <img src="${production.image}" class="card-img-top productionI" alt="${production.title}">
             <div class="card-body">
               <h5 class="card-title">${production.title}</h5>
-              <p class="card-text">${production.synopsis}.</p>
+              <p class="card-synopsis">${production.synopsis}.</p>
+              <p class="card-nationality">${production.nationality}.</p>
+              <p class="card-publication">Publicación: ${production.publication}.</p>
             </div>
           </div>
           </div>
-          <div class="cart mt-4 align-items-center">
+          <div class="cart mt-4 d-flex align-items-center justify-content-center">
           <button id="p-open" data-title="${production.title}" class="btn btn-primary text-uppercase mr-2 px-4">Abrir en nueva ventana</button>
           </div>`);
 
@@ -328,18 +360,42 @@ class VideoSystemView {
 
   //Bind para el click en las producciones por toda la página
   bindProductionInfo(handler) {
-    $('#productions').find('a').click(function (event) {
-      handler(this.dataset.production);
-    });
-    $('#productions-cat').find('a').click(function (event) {
-      handler(this.dataset.production);
-    });
-    $('#productions-act').find('a').click(function (event) {
-      handler(this.dataset.production);
-    });
-    $('#productions-dir').find('a').click(function (event) {
-      handler(this.dataset.production);
-    });
+		$('#productions').find('a').click((event) => {
+			let production = $(event.target).closest($('a')).get(0).dataset.production;
+			this.#excecuteHandler(
+				handler, [production],
+				'#production-info',
+				{action: 'productionInfo', production: production},
+				'#productions', event
+			);
+		});
+		$('#productions-cat').find('a').click((event) => {
+			let production = $(event.target).closest($('a')).get(0).dataset.production;
+			this.#excecuteHandler(
+				handler, [production],
+				'#production-info',
+				{action: 'productionInfo', production: production},
+				'#productions-cat', event
+			);
+		});
+		$('#productions-act').find('a').click((event) => {
+			let production = $(event.target).closest($('a')).get(0).dataset.production;
+			this.#excecuteHandler(
+				handler, [production],
+				'#production-info',
+				{action: 'productionInfo', production: production},
+				'#productions-act', event
+			);
+		});
+		$('#productions-dir').find('a').click((event) => {
+			let production = $(event.target).closest($('a')).get(0).dataset.production;
+			this.#excecuteHandler(
+				handler, [production],
+				'#production-info',
+				{action: 'productionInfo', production: production},
+				'#productions-dir', event
+			);
+		});
   }
 
 
@@ -362,6 +418,8 @@ class VideoSystemView {
         <div class="card-body">
           <h5 class="card-title">${production.title}</h5>
           <p class="card-text">${production.synopsis}.</p>
+          <p class="card-nationality">${production.nationality}.</p>
+          <p class="card-publication">Publicación: ${production.publication}.</p>
         </div>
       </div>
       </div>
@@ -409,7 +467,9 @@ class VideoSystemView {
 
     main.append(container3);
 
-    let cerrar = $(`<button class="btn btn-primary text-uppercase m-2 px4" onClick="window.close()">Cerrar</button>)`);
+    let cerrar = $(`<div class="cart mt-4 d-flex align-items-center justify-content-center">
+      <button class="btn btn-primary text-uppercase m-2 px4" onClick="window.close()">Cerrar Ventana</button>
+    </div>`);
 
     main.append(cerrar);
 
@@ -420,26 +480,54 @@ class VideoSystemView {
   bindShowProductionInNewWindow(handler) {
     $('#p-open').click((event) => {
       if (!this.productionWindow || this.productionWindow.closed) {
-        this.productionWindow = window.open("production.html", "ProductionWindow",
+        this.productionWindow = window.open("production.html", event.target.dataset.title,
           "width=800, height=600, top=250, left=250, titlebar=yes, toolbar=no, menubar = no, location = no");
-            this.productionWindow.addEventListener('DOMContentLoaded', () => {
-            handler(event.target.dataset.title)
-          });
+
+        this.productionWindow.addEventListener('DOMContentLoaded', () => {
+          handler(event.target.dataset.title)
+        });
+
+        this.totalWindows.push(this.productionWindow);
+        console.log(this.totalWindows);
+
       } else {
-        if ($(this.productionWindow.document).find('header nav h1').get(0).dataset.title !== event.target.dataset.title){handler(event.target.dataset.title);
+        if ($(this.productionWindow.document).find('header nav h1').get(0).dataset.title !== event.target.dataset.title) {
+          console.log($(this.productionWindow.document).find('header nav h1').get(0).dataset.title);
+          console.log(event.target.dataset.title);
+          this.productionWindow = window.open("production.html", event.target.dataset.title,
+          "width=800, height=600, top=250, left=250, titlebar=yes, toolbar=no, menubar = no, location = no");
+
+        this.productionWindow.addEventListener('DOMContentLoaded', () => {
+          handler(event.target.dataset.title)
+        });
+        }
+        this.productionWindow.focus();
+
+        this.totalWindows.push(this.productionWindow);
+        console.log(this.totalWindows);
       }
-      this.productionWindow.focus();
-    }
-});
-}
+    });
+  }
+
+  bindCloseAllWindows(handler) {
+    $('#cerrarTodo').click(() => {
+      handler();
+    });
+  }
 
 
 
   //Bind para el click en los actores fuera del menú de navegación
   bindProductionsActorListOutsideMenu(handler) {
-    $('#production-actors').find('a').click(function (event) {
-      handler(this.dataset.actor);
-    });
+		$('#production-actors').find('a').click((event) => {
+			let actor = $(event.target).closest($('a')).get(0).dataset.actor;
+			this.#excecuteHandler(
+				handler, [actor],
+				'#act-info',
+				{action: 'ActorOutsideMenu', actor: actor},
+				'#production-actors', event
+			);
+		});
   }
 
   //Bind para el click en los directores fuera del menú de navegación
@@ -453,10 +541,10 @@ class VideoSystemView {
   //Para la funcionalidad del logo y del botón de inicio del menú de navegación
   bindInit(handler) {
     $('#init').click((event) => {
-      handler();
+      this.#excecuteHandler(handler, [], 'body', { action: 'init' }, '#', event);
     });
     $('#logo').click((event) => {
-      handler();
+      this.#excecuteHandler(handler, [], 'body', { action: 'init' }, '#', event);
     });
   }
 

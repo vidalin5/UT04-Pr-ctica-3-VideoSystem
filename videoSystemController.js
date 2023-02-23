@@ -23,10 +23,10 @@ class VideoSystemController {
         let s2 = new Serie("Los Soprano", "EEUU", new Date("1998/04/04"), "Peleas entre mafias", "img/lossoprano.jpg", [new Resource(52, "link1"), new Resource(52, "link2"), new Resource(52, "link3")], [new Coordinate(5675, 5555)], 7);
         let s3 = new Serie("The Wire", "EEUU", new Date("1988/05/12"), "Policiaca", "img/thewire.jpg", [new Resource(20, "link1"), new Resource(20, "link2"), new Resource(20, "link3")], [new Coordinate(4290, 7753)], 30);
         let s4 = new Serie("Breaking Bad", "EEUU", new Date("2008/12/01"), "Cocinar metanfetamina", "img/breakingbad.jpg", [new Resource(55, "link1"), new Resource(55, "link2"), new Resource(55, "link3")], [new Coordinate(2111, 2199), new Coordinate(8003, 8343)], 5);
-        let m5 = new Movie("El Dictador", "EEUU", new Date("2003/01/30"), "La Tierra Media", "img/eldictador.jpg", new Resource(175, "link1"), [new Coordinate(4132, 5124)]);
-        let m6 = new Movie("Scary Movie", "EEUU", new Date("2003/01/30"), "La Tierra Media", "img/scarymovie.jpg", new Resource(155, "link1"), [new Coordinate(2421, 1252)]);
-        let m7 = new Movie("Borat", "EEUU", new Date("2003/01/30"), "La Tierra Media", "img/borat.jpg", new Resource(200, "link1"), [new Coordinate(2212, 5122)]);
-        let m8 = new Movie("Ted", "EEUU", new Date("2003/01/30"), "La Tierra Media", "img/ted.jpg", new Resource(125, "link1"), [new Coordinate(4212, 3212)]);
+        let m5 = new Movie("El Dictador", "EEUU", new Date("2003/01/30"), "Dictador caprichoso", "img/eldictador.jpg", new Resource(175, "link1"), [new Coordinate(4132, 5124)]);
+        let m6 = new Movie("Scary Movie", "EEUU", new Date("2003/01/30"), "Parodía de otras películas", "img/scarymovie.jpg", new Resource(155, "link1"), [new Coordinate(2421, 1252)]);
+        let m7 = new Movie("Borat", "EEUU", new Date("2003/01/30"), "Haciendo locuras", "img/borat.jpg", new Resource(200, "link1"), [new Coordinate(2212, 5122)]);
+        let m8 = new Movie("Ted", "EEUU", new Date("2003/01/30"), "Oso con vida propia", "img/ted.jpg", new Resource(125, "link1"), [new Coordinate(4212, 3212)]);
 
         //Actores
         let a1 = new Person("Natalia", "Muñoz", "Pérez", new Date("1990/02/04"), "img/actor4.jpg");
@@ -95,6 +95,7 @@ class VideoSystemController {
         this.onAddActor();
         this.onAddDirector();
         this.onAddCategory();
+        this.#videoSystemView.bindCloseAllWindows(this.handleCloseAllWindows);
     }
 
     //Función de inicio
@@ -147,6 +148,9 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionInfo(
             this.handleProductionInfo
         );
+        this.#videoSystemView.bindProductionsCategoryListInMenu(
+            this.handleProductionsCategoryList
+        );
     }
 
     //Handle para la navegación de actores y sus producciones
@@ -186,6 +190,15 @@ class VideoSystemController {
     handleProductionInfoInNewWindow = (title) => {
         let production = this.#videoSystemModel.getProduction(title);
         this.#videoSystemView.productionInfoInNewWindow(production, this.#videoSystemModel.getCastingActors(production), this.#videoSystemModel.getCastingDirectors(production));
+    }
+
+    handleCloseAllWindows = () => {
+        for (let i = 0; i < this.#videoSystemView.totalWindows.length; i++) {
+            this.#videoSystemView.totalWindows[i].close(); // cierra todas las ventanas abiertas
+        }
+
+        this.#videoSystemView.totalWindows = []; // limpia la lista de ventanas abiertas
+
     }
 
 

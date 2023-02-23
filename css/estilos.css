@@ -7,7 +7,7 @@
 }
 
 main {
-    height: 1280px;
+    height: 1450px;
 }
 
 #categories-title {
@@ -159,4 +159,12 @@ footer form button.btn {
 .directoresI {
     height: 200px;
     
+}
+
+.btn-primary {
+    margin-left: 100px;
+}
+
+.footer2 {
+    margin-top: 100px
 }
