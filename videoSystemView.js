@@ -1399,8 +1399,14 @@ class VideoSystemView {
 
   //Bind para el click en los directores fuera del menú de navegación
   bindProductionsDirectorListOutsideMenu(handler) {
-    $('#production-directors').find('a').click(function (event) {
-      handler(this.dataset.director);
+    $('#production-directors').find('a').click((event) => {
+      let director = $(event.target).closest($('a')).get(0).dataset.director;
+      this.#excecuteHandler(
+        handler, [director],
+        '#dir-info',
+        { action: 'DirectorOutsideMenu', director: director },
+        '#production-directors', event
+      );
     });
   }
 

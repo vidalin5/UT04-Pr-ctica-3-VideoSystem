@@ -26,7 +26,8 @@ const historyActions = {
     newProduction: () =>	VideoSystemApp.handleNewProductionForm(),
     removeProduction: () =>	VideoSystemApp.handleRemoveProductionForm(),
     assignActorsDirectors: () =>	VideoSystemApp.handleNewAssignDeassignForm(),
-    //ActorOutsideMenu: (event) => VideoSystemApp.handleProductionInfo(event.state.actor, event.state.production),
+    ActorOutsideMenu: (event) => VideoSystemApp.handleProductionsActorList(event.state.actor),
+    DirectorOutsideMenu: (event) => VideoSystemApp.handleProductionsDirectorList(event.state.director),
 }
 window.addEventListener('popstate', function (event) {
     if (event.state) {
