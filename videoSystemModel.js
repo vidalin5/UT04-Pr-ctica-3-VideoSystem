@@ -313,9 +313,6 @@ class Movie extends Production {
         //Para invocar con el operador new
         if (!new.target) throw new InvalidAccessConstructorException();
 
-        //Validación de tipos
-        if (!(resource instanceof Resource)) throw new InvalidValueException("resource", resource);
-
         super(title, nationality, publication, synopsis, image);
         this.#resource = resource;
         this.#locations = locations;
@@ -369,9 +366,6 @@ class Serie extends Production {
 
         //Para invocar con el operador new
         if (!new.target) throw new InvalidAccessConstructorException();
-
-        //Validación de tipos
-        if (typeof seasons != "number") throw new InvalidValueException("seasons", seasons);
 
         super(title, nationality, publication, synopsis, image);
         this.#resources = resources;

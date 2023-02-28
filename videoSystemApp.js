@@ -10,6 +10,7 @@ $(function () {
     );
 });
 
+//Para el historial de la aplicación
 const historyActions = {
     init: () => {
         VideoSystemApp.handleInit();
@@ -18,6 +19,13 @@ const historyActions = {
     productionsActorList: (event) => VideoSystemApp.handleProductionsActorList(event.state.actor),
     productionsDirectorList: (event) => VideoSystemApp.handleProductionsDirectorList(event.state.director),
     productionInfo: (event) => VideoSystemApp.handleProductionInfo(event.state.production),
+    newCategory: () =>	VideoSystemApp.handleNewCategoryForm(),
+	removeCategory: () =>	VideoSystemApp.handleRemoveCategoryForm(),
+    newPerson: () =>	VideoSystemApp.handleNewPersonForm(),
+	removePerson: () =>	VideoSystemApp.handleRemovePersonForm(),
+    newProduction: () =>	VideoSystemApp.handleNewProductionForm(),
+    removeProduction: () =>	VideoSystemApp.handleRemoveProductionForm(),
+    assignActorsDirectors: () =>	VideoSystemApp.handleNewAssignDeassignForm(),
     //ActorOutsideMenu: (event) => VideoSystemApp.handleProductionInfo(event.state.actor, event.state.production),
 }
 window.addEventListener('popstate', function (event) {

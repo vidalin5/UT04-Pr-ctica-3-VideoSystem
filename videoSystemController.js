@@ -96,6 +96,17 @@ class VideoSystemController {
         this.onAddDirector();
         this.onAddCategory();
         this.#videoSystemView.bindCloseAllWindows(this.handleCloseAllWindows);
+        this.#videoSystemView.showAdministrationMenu();
+        this.#videoSystemView.bindAdministrationMenu(
+            this.handleNewCategoryForm,
+            this.handleRemoveCategoryForm,
+            this.handleNewPersonForm,
+            this.handleRemovePersonForm,
+            this.handleNewAssignDeassignForm,
+            this.handleNewProductionForm,
+            this.handleRemoveProductionForm
+            );
+
     }
 
     //Función de inicio
@@ -192,6 +203,7 @@ class VideoSystemController {
         this.#videoSystemView.productionInfoInNewWindow(production, this.#videoSystemModel.getCastingActors(production), this.#videoSystemModel.getCastingDirectors(production));
     }
 
+    //Handle para cerrar todas las ventanas
     handleCloseAllWindows = () => {
         for (let i = 0; i < this.#videoSystemView.totalWindows.length; i++) {
             this.#videoSystemView.totalWindows[i].close(); // cierra todas las ventanas abiertas
@@ -200,6 +212,231 @@ class VideoSystemController {
         this.#videoSystemView.totalWindows = []; // limpia la lista de ventanas abiertas
 
     }
+
+    //Handle para el formulario de nuevas categorías
+    handleNewCategoryForm = () => {
+        this.#videoSystemView.showNewCategoryForm();
+        this.#videoSystemView.bindNewCategoryForm(this.handleCreateCategory);
+    }
+    
+    //Handle para la creación de categorías nuevas
+    handleCreateCategory = (title, url, desc) => {
+        let cat = new Category(title, desc, url);
+
+        let done, error;
+        try {
+            this.#videoSystemModel.addCategory(cat);
+            done = true;
+            this.onAddCategory();
+        } catch (exception) {
+            done = false;
+            error = exception;
+        }
+        this.#videoSystemView.showNewCategoryModal(done, cat, error);
+    }
+
+    //Handle para el form de borrar categorías
+    handleRemoveCategoryForm = () => {
+        this.#videoSystemView.showRemoveCategoryForm();
+        this.#videoSystemView.bindRemoveCategoryForm(this.handleRemoveCategory);
+    }
+
+    //Handle para borrar categorías
+    handleRemoveCategory = (title) => {
+        let done, error, cat;
+        try {
+            cat = this.#videoSystemModel.getCategory(title);
+            this.#videoSystemModel.removeCategory(cat);
+            done = true;
+            this.onAddCategory();
+        } catch (exception) {
+            done = false;
+            error = exception;
+        }
+        this.#videoSystemView.showRemoveCategoryModal(done, cat, error);
+    }
+
+    //Handle para el form de nuevas personas
+    handleNewPersonForm = () => {
+        this.#videoSystemView.showNewPersonForm();
+        this.#videoSystemView.bindNewPersonForm(this.handleCreatePerson);
+    }
+
+    //Handle para la creación de nuevas personas
+    handleCreatePerson = (name, lastname1, lastname2, born, url, isActor) => {
+        let per = new Person(name, lastname1, lastname2, born, url);
+
+        let done, error;
+
+        if (isActor) {
+            try {
+                this.#videoSystemModel.addActor(per);
+                done = true;
+                this.onAddActor();
+            } catch (exception) {
+                done = false;
+                error = exception;
+            }
+        this.#videoSystemView.showNewPersonModal(done, per, error);
+        } else {
+            try {
+                this.#videoSystemModel.addDirector(per);
+                done = true;
+                this.onAddDirector();
+            } catch (exception) {
+                done = false;
+                error = exception;
+            }
+        this.#videoSystemView.showNewPersonModal(done, per, error);
+        }
+
+    }
+
+    //Handle para el formulario de borrado de personas
+    handleRemovePersonForm = () => {
+        this.#videoSystemView.showRemovePersonForm();
+        this.#videoSystemView.bindRemovePersonForm(this.handleRemovePerson);
+    }
+
+    //Handle para borrar personas
+    handleRemovePerson = (title, isActor) => {
+        let done, error, per;
+
+        if (isActor) {
+            try {
+                per = this.#videoSystemModel.getActor(title);
+                this.#videoSystemModel.removeActor(per);
+                done = true;
+                this.onAddActor();
+            } catch (exception) {
+                done = false;
+                error = exception;
+            }
+            this.#videoSystemView.showRemovePersonModal(done, per, error);
+        } else {
+            try {
+                per = this.#videoSystemModel.getDirector(title);
+                this.#videoSystemModel.removeDirector(per);
+                done = true;
+                this.onAddDirector();
+            } catch (exception) {
+                done = false;
+                error = exception;
+            }
+            this.#videoSystemView.showRemovePersonModal(done, per, error);
+        }
+    }
+
+    //Handle para el form de asignación/desasignación de actores y directores a una producción
+    handleNewAssignDeassignForm = () => {
+        this.#videoSystemView.ShowNewAssignDeassignForm();
+        this.#videoSystemView.bindNewAssignDeassignForm(this.handleCreateAssignDeassign);
+    }
+
+    //Handle para la asignación/desasignación de actores y directores a una producción
+    handleCreateAssignDeassign = (title, actor, director, isAssign) => {
+
+        let done, error;
+
+        let pro = this.#videoSystemModel.getProduction(title);
+
+        let act = this.#videoSystemModel.getActor(actor);
+        let dir = this.#videoSystemModel.getDirector(director);
+        if (isAssign) {
+            try {
+                this.#videoSystemModel.assignActor(act, pro);
+                this.#videoSystemModel.assignDirector(dir, pro);
+                done = true;
+            } catch (exception) {
+                done = false;
+                error = exception;
+            }
+        this.#videoSystemView.showNewAssignDeassignModal(done, act, dir, pro, error);
+        } else {
+            try {
+                this.#videoSystemModel.deassignActor(act, pro);
+                this.#videoSystemModel.deassignDirector(dir, pro);
+                done = true;
+            } catch (exception) {
+                done = false;
+                error = exception;
+            }
+        this.#videoSystemView.showNewAssignDeassignModal(done, act, dir, pro, error);
+        }
+
+    }
+
+    //Handle para el form de crear nuevas producciones
+    handleNewProductionForm = () => {
+        this.#videoSystemView.showNewProductionForm();
+        this.#videoSystemView.bindNewProductionForm(this.handleCreateProduction);
+    }
+
+    //Handle para la creación de nuevas producciones
+    handleCreateProduction = (title, nationality, publication, synopsis, url, director, actor1, actor2, category, isFilm) => {
+
+        let pro;
+        if (isFilm) {
+            pro = new Movie(title, nationality, publication, synopsis, url);
+        } else {
+            pro = new Serie(title, nationality, publication, synopsis, url);
+        }
+
+        let done, error;
+        let act1 = this.#videoSystemModel.getActor(actor1);
+        let act2 = this.#videoSystemModel.getActor(actor2);
+        let dir = this.#videoSystemModel.getDirector(director);
+        let cat = this.#videoSystemModel.getCategory(category);
+
+        try {
+            this.#videoSystemModel.assignCategory(cat, pro);
+            this.#videoSystemModel.assignDirector(dir, pro);
+            this.#videoSystemModel.assignActor(act1, pro);
+            this.#videoSystemModel.assignActor(act2, pro);
+            done = true;
+        } catch (exception) {
+            done = false;
+            error = exception;
+        }
+    this.#videoSystemView.showNewProductionModal(done, pro, error);
+
+    }
+
+    //Handle para el form de borrado de producciones
+    handleRemoveProductionForm = () => {
+        this.#videoSystemView.showRemoveProductionForm();
+        this.#videoSystemView.bindRemoveProductionForm(this.handleRemoveProduction);
+    }
+
+    //Handle para el borrado de producciones
+    handleRemoveProduction = (title) => {
+        let done, error, pro, cat;
+        try {
+            pro = this.#videoSystemModel.getProduction(title);
+
+            for (let category of this.#videoSystemModel.Categories) {
+                let generator = this.#videoSystemModel.getProductionsCategory(category);
+
+                let next;
+                while (!(next = generator.next()).done) {
+                    let product = next.value;
+                    if (product.title == pro.title) {
+                        cat = category;
+                    }
+                }
+            }
+
+            this.#videoSystemModel.deassignCategory(cat, pro);
+            this.#videoSystemModel.removeProduction(pro);
+
+            done = true;
+        } catch (exception) {
+            done = false;
+            error = exception;
+        }
+        this.#videoSystemView.showRemoveProductionModal(done, pro, error);
+    }
+
 
 
 
