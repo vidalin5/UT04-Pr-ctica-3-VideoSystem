@@ -435,10 +435,12 @@ function loginValidation(handler, handler2) {
     $(form).attr('novalidate', true);
 
     $(form).submit(function (event) {
+        //console.log("hola");
         let isValid = true;
         let firstInvalidElement = null;
 
         if (!this.lUser.checkValidity()) {
+            //console.log("hola");
             isValid = false;
             showFeedBack($(this.lUser), false);
             firstInvalidElement = this.lUser;
@@ -447,6 +449,7 @@ function loginValidation(handler, handler2) {
         }
 
         if (!this.lPass.checkValidity()) {
+            //console.log("hola");
             isValid = false;
             showFeedBack($(this.lPass), false);
             firstInvalidElement = this.lPass;
