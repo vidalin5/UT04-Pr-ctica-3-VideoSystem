@@ -1,0 +1,109 @@
+{
+    "Movies": [
+        {
+            "title": "La momia",
+            "nationality": "Francia",
+            "publication": "1994-11-05T00:00:00.000Z",
+            "synopsis": "La momia ataca",
+            "image": "img/lamomia.jpg"
+        },
+
+        {
+            "title": "Star Wars",
+            "nationality": "EEUU",
+            "publication": "1998-05-12T00:00:00.000Z",
+            "synopsis": "En una galaxia muy lejana",
+            "image": "img/starwars.jpg"
+        },
+
+        {
+            "title": "Avatar",
+            "nationality": "EEUU",
+            "publication": "2022-07-22T00:00:00.000Z",
+            "synopsis": "Un nuevo planeta",
+            "image": "img/avatar.jpg"
+        },
+
+        {
+            "title": "El Señor de los Anillos",
+            "nationality": "EEUU",
+            "publication": "2003/01/30T00:00:00.000Z",
+            "synopsis": "La Tierra Media",
+            "image": "img/elseñordelosanillos.jpg"
+        },
+
+        {
+            "title": "El Dictador",
+            "nationality": "EEUU",
+            "publication": "2003/01/30T00:00:00.000Z",
+            "synopsis": "Dictador caprichoso",
+            "image": "img/eldictador.jpg"
+        },
+
+        {
+            "title": "Scary Movie",
+            "nationality": "EEUU",
+            "publication": "2003/01/30T00:00:00.000Z",
+            "synopsis": "Parodía de otras películas",
+            "image": "img/scarymovie.jpg"
+        },
+
+        {
+            "title": "Borat",
+            "nationality": "EEUU",
+            "publication": "2003/01/30T00:00:00.000Z",
+            "synopsis": "Haciendo locuras",
+            "image": "img/borat.jpg"
+        },
+
+        {
+            "title": "Ted",
+            "nationality": "EEUU",
+            "publication": "2003/01/30T00:00:00.000Z",
+            "synopsis": "Oso con vida propia",
+            "image": "img/ted.jpg"
+        }
+    ],
+
+
+    "Series": [
+        {
+            "title": "La Perdidos",
+            "nationality": "EEUU",
+            "publication": "1999-11-05T00:00:00.000Z",
+            "synopsis": "Perdidos en una isla",
+            "image": "img/perdidos.jpg"
+        },
+
+        {
+            "title": "Los Soprano",
+            "nationality": "EEUU",
+            "publication": "1998-04-04T00:00:00.000Z",
+            "synopsis": "Peleas entre mafias",
+            "image": "img/lossoprano.jpg"
+        },
+
+        {
+            "title": "The Wire",
+            "nationality": "EEUU",
+            "publication": "1988-05-12T00:00:00.000Z",
+            "synopsis": "Policiaca",
+            "image": "img/thewire.jpg"
+        },
+
+        {
+            "title": "Breaking Bad",
+            "nationality": "EEUU",
+            "publication": "2008-12-01T00:00:00.000Z",
+            "synopsis": "Cocinar metanfetamina",
+            "image": "img/breakingbad.jpg"
+        }
+
+    ]
+
+    
+
+}
+
+
+

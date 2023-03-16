@@ -27,6 +27,7 @@ function newCategoryValidation(handler) {
     $(form).attr('novalidate', true);
 
     $(form).submit(function (event) {
+        
         let isValid = true;
         let firstInvalidElement = null;
 
@@ -91,7 +92,9 @@ function removeCategoryValidation(handler) {
             firstInvalidElement.focus();
         } else {
             handler(this.rcTitle.value);
+            console.dir("HOLA");
         }
+        console.dir(isValid);
         event.preventDefault();
         event.stopPropagation();
     });
@@ -426,7 +429,64 @@ function removeProductionValidation(handler) {
 
 }
 
+function loginValidation(handler, handler2) {
+
+    let form = document.forms.fLogin;
+    $(form).attr('novalidate', true);
+
+    $(form).submit(function (event) {
+        let isValid = true;
+        let firstInvalidElement = null;
+
+        if (!this.lUser.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.lUser), false);
+            firstInvalidElement = this.lUser;
+        } else {
+            showFeedBack($(this.lUser), true);
+        }
+
+        if (!this.lPass.checkValidity()) {
+            isValid = false;
+            showFeedBack($(this.lPass), false);
+            firstInvalidElement = this.lPass;
+        } else {
+            showFeedBack($(this.lPass), true);
+        }
+
+        if (!isValid) {
+            firstInvalidElement.focus();
+        } else {
+
+            let encontrado = handler(this.lUser.value, this.lPass.value);
+
+            if (encontrado) {
+                document.cookie = "Usuario=" + this.lUser.value;
+                handler2();
+            } else {
+                let inco = $(this).find('div.incorrect');
+                inco.removeClass('d-none').addClass('d-block');
+            }
+
+        }
+        event.preventDefault();
+        event.stopPropagation();
+    });
+
+    form.addEventListener('reset', (function (event) {
+        let feedDivs = $(this).find('div.valid-feedback, div.invalid-feedback');
+        feedDivs.removeClass('d-block').addClass('d-none');
+        let inputs = $(this).find('input');
+        inputs.removeClass('is-valid is-invalid');
+    }));
+
+    $(form.lUser).change(defaultCheckElement);
+    $(form.lPass).change(defaultCheckElement);
+
+}
+
+
 
 
 export {showFeedBack, defaultCheckElement, newCategoryValidation, removeCategoryValidation, newPersonValidation, removePersonValidation, newAssignDeassignValidation, 
-    newProductionValidation, removeProductionValidation};
+    newProductionValidation, removeProductionValidation, loginValidation};

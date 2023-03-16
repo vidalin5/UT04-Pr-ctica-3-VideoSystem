@@ -26,6 +26,7 @@ const historyActions = {
     newProduction: () =>	VideoSystemApp.handleNewProductionForm(),
     removeProduction: () =>	VideoSystemApp.handleRemoveProductionForm(),
     assignActorsDirectors: () =>	VideoSystemApp.handleNewAssignDeassignForm(),
+    newLogin: () => VideoSystemApp.handleNewLoginForm(),
     ActorOutsideMenu: (event) => VideoSystemApp.handleProductionsActorList(event.state.actor),
     DirectorOutsideMenu: (event) => VideoSystemApp.handleProductionsDirectorList(event.state.director),
 }

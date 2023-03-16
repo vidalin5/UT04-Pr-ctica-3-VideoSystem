@@ -1,7 +1,7 @@
 import VideoSystem from "./videoSystemModel.js";
 import {
   showFeedBack, defaultCheckElement, newCategoryValidation, removeCategoryValidation, newPersonValidation, removePersonValidation,
-  newAssignDeassignValidation, newProductionValidation, removeProductionValidation
+  newAssignDeassignValidation, newProductionValidation, removeProductionValidation, loginValidation
 } from "./validation.js";
 
 //MVC - VISTA
@@ -24,6 +24,7 @@ class VideoSystemView {
   constructor() {
     this.main = $('main');
     this.menu = $('.navbar-nav');
+    this.login = $('.login');
     this.categories = $('#categories');
     this.productionWindow = null;
   }
@@ -41,7 +42,7 @@ class VideoSystemView {
     let container = $(`<div id="categories" class="card-group">
         </div>`);
     for (let category of Categories) {
-      let div = $(`<div class="card mt-3">
+      let div = $(`<div class="card mt-3 mx-3">
           <a data-category="${category.name}" href="#">
             <img src="${category.image}" class="card-img-top" alt="${category.name}">
             <div class="card-body">
@@ -182,7 +183,92 @@ class VideoSystemView {
     li.append(container);
 
     this.menu.append(li);
+
   }
+
+  showLoginMenu() {
+
+    if (document.cookie == "Usuario=admin") {
+
+      let cLog = $(`<div><p class="saludo"><b>BIENVENIDO</b>: admin</p>
+        <a id="cerrarSesion" href="#">Cerrar Sesión</a></div>`);
+
+      this.login.append(cLog);
+
+      $('#cerrarSesion').on('click', function() {
+        
+        document.cookie = "Usuario=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+
+        window.location.href="videostreaming.html";
+        
+      })
+
+    } else {
+
+      let log = $(`<div><a id="login" href="#login-form">Login</a></div>`);
+
+      this.login.append(log);
+
+    }
+
+  }
+
+
+  showNewLoginForm() {
+
+    this.main.empty();
+
+    let container = $(`<div id="login-form" class="container my-3">
+      <h1 class="display-5">Formulario de Login</h1>
+      <form name="fLogin" role="form" novalidate>
+      <div class="form-row">
+      <div class="col-md-6 mb-3">
+      <label for="lUser">Usuario *</label>
+      <div class="input-group">
+      <div class="input-group-prepend">
+      <span class="input-group-text" id="titlePrepend"><i class="fas fa-heading"></i></span>
+      </div>
+      <input type="text" class="form-control" id="lUser" name="lUser" placeholder="Nombre de usuario"
+      aria-describedby="titlePrepend" value="" required>
+      <div class="invalid-feedback">El usuario es obligatorio.</div>
+      <div class="valid-feedback">Correcto.</div>
+      </div>
+      </div>
+      <div class="col-md-6 mb-3">
+      <label for="lPass">Contraseña *</label>
+      <div class="input-group">
+      <div class="input-group-prepend">
+      <span class="input-group-text" id="urlPrepend"><i
+      class="fas fa-image"></i></span>
+      </div>
+      <input type="password" class="form-control" id="lPass" name="lPass" placeholder="Contraseña"
+      aria-describedby="urlPrepend" value="" required>
+      <div class="invalid-feedback">La Contraseña es obligatoria.</div>
+      <div class="valid-feedback">Correcto.</div>
+      </div>
+      </div>
+      </div>
+      <button class="btn btn-primary" type="submit">Login</button>
+      <button class="btn btn-primary" type="reset">Cancelar</button>
+      <div class="incorrect d-none">Usuario/contraseña incorrectos</div>
+      </form>
+      </div>
+      </div>`);
+
+    this.main.append(container);
+
+  }
+
+    
+    bindLoginForm(handler, handler2) {
+      loginValidation(handler, handler2);
+    }
+
+    bindLoginMenu(hLogin) {
+      $('#login').click((event) => {
+        this.#excecuteHandler(hLogin, [], '#login-form', { action: 'newLogin' }, '#', event);
+      });
+    }
 
 
   //Para mostrar el formulario de nueva categoría
@@ -423,7 +509,7 @@ class VideoSystemView {
       </div>
       </div>
       <div class="col-md-6 mb-3">
-      <label for="npBorn">Fecha nacimiento *</label>
+      <label for="npBorn">Fecha nacimiento</label>
       <div class="input-group">
       <div class="input-group-prepend">
       <span class="input-group-text" id="titlePrepend"><i class="fa-regular fa-calendar-days"></i></span>
@@ -499,7 +585,7 @@ class VideoSystemView {
         newPersonModal.modal('hide');
       })
     } else {
-      $(document.fNewPerson).prepend(`<div class="error text-danger p-3"><i class="fas fa-exclamation-triangle"></i> La persona <strong>${per.name} ${per.lastname1} ${per.lastname2}</strong> ya está creada.</div>`);
+      $(document.fNewPerson).prepend(`<div class="error text-danger p-3"><i class="fas fa-exclamation-triangle"></i> La persona <strong>${per.name}</strong> ya está creada.</div>`);
     }
   }
 
@@ -755,7 +841,7 @@ class VideoSystemView {
     </div>
     <div class="form-row">
     <div class="col-md-6 mb-3">
-    <label for="nproPublication">Fecha de estreno *</label>
+    <label for="nproPublication">Fecha de estreno</label>
     <div class="input-group">
     <div class="input-group-prepend">
     <span class="input-group-text" id="titlePrepend"><i class="fa-regular fa-calendar-days"></i></span>
@@ -767,7 +853,7 @@ class VideoSystemView {
     </div>
     </div>
     <div class="col-md-6 mb-3">
-    <label for="nproSynopsis">Sinopsis *</label>
+    <label for="nproSynopsis">Sinopsis</label>
     <div class="input-group">
     <div class="input-group-prepend">
     <span class="input-group-text" id="titlePrepend"><i class="fas fa-align-left"></i></span>
@@ -1420,6 +1506,76 @@ class VideoSystemView {
       this.#excecuteHandler(handler, [], 'body', { action: 'init' }, '#', event);
     });
   }
+
+
+  //Para mostrar por pantalla el geocoder
+ createGeoCoder () {
+
+		this.main.append($(`<div class="container p-4">
+			<form id="fGeocoder" method="get" action="https://nominatim.openstreetmap.org/search">
+				<input type="hidden" name="format" value="json">
+				<input type="hidden" name="limit" value="3">
+				<h2>GeoCoder</h2>
+				<div class="form-group row">
+					<div class="col-sm-10">
+						<label for="address" class="col-form-label">Dirección</label>
+						<input type="text" name="q" class="form-control" id="address" placeholder="Introduce la dirección a buscar">
+					</div>
+					<div class="col-sm-2 align-self-end">
+						<button id="bAddress" class="btn btn-primary" type="submit">Buscar</button>
+					</div>
+				</div>
+				<div id="geocoderAddresses"></div>
+				<div id="geocoderMap" class="my-2"></div>
+			</form>
+		</div>`));
+
+		let form = $('#fGeocoder');
+		let addresses = $('#geocoderAddresses');
+		let mapContainer = $('#geocoderMap');
+		let map = null;
+
+		form.submit(function(event){
+			let form = $(this);
+			$.get(this.action + '?' + form.serialize()).then(
+				function(data) {
+					let list = $('<div class="list-group"></div>');
+					data.forEach((address) => {
+						list.append(`<a href="#" data-lat="${address.lat}" data-lon="${address.lon}" class="list-group-item list-group-item-action">
+							${address.display_name}</a>`);
+					});
+					addresses.empty();
+					addresses.append(list);
+					list.find('a').click(function(event){
+						$(this).siblings().removeClass('active');
+						$(this).addClass('active');
+						if (map){
+							map.setView(new L.LatLng(this.dataset.lat, this.dataset.lon), 15);
+						} else {
+							mapContainer.css({height: '350px', border: '2px solid #faa541'});
+							map = L.map('geocoderMap').setView([this.dataset.lat, this.dataset.lon], 15);
+							L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+								attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+								maxZoom: 18
+							}).addTo(map);
+						}
+						L.marker([this.dataset.lat, this.dataset.lon]).addTo(map);
+						event.preventDefault();
+						event.stopPropagation();
+					})
+				}, function(error) {
+					addresses.empty();
+					addresses.append(`<div class="text-danger">
+						<i class="fas fa-exclamation-circle"></i>
+						No se ha podido establecer la conexión con el servidor de mapas.
+					</div>`);
+				}
+			);
+
+			event.preventDefault();
+			event.stopPropagation();
+		})
+	}
 
 
 }

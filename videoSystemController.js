@@ -15,6 +15,30 @@ class VideoSystemController {
         let c3 = new Category("Thriller", "De intriga y suspense", "img/thriller.jpg");
 
         //Producciones
+        //16-03-23
+        //He implementado Logun y geocoder. He empezado a implementar el archivo de JSON con las producciones y he estado haciendo
+        //pruebas con él para ver si me cogía bien los datos, pero lo tengo que dejar aquí, no me da tiempo a terminar de integrar
+        //todos los objetos de la aplicación de esta forma
+        fetch('videosystem.json')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.Movies)
+                for (let i = 0; i < data.Movies.length; i++) {
+                    console.log(data.Movies[i]);
+                    let m1 = new Movie(data.Movies[i].title, data.Movies[i].nationality, new Date(data.Movies[i].publication), data.Movies[i].synopsis, data.Movies[i].image);
+                    console.log(m1);
+                }
+                console.log(data.Series)
+                for (let i = 0; i < data.Series.length; i++) {
+                    console.log(data.Series[i]);
+                    let s1 = new Movie(data.Series[i].title, data.Series[i].nationality, new Date(data.Series[i].publication), data.Series[i].synopsis, data.Series[i].image);
+                    console.log(s1);
+                }
+            })
+            .catch(error => {
+                console.log("Error al leer el archivo" + error)
+            })
+
         let m1 = new Movie("La momia", "Francia", new Date("1994/11/05"), "La momia ataca", "img/lamomia.jpg", new Resource(120, "link1"), [new Coordinate(2425, 2211), new Coordinate(1429, 2125)]);
         let m2 = new Movie("Star Wars", "EEUU", new Date("1998/05/12"), "En una galaxia muy lejana", "img/starwars.jpg", new Resource(155, "link1"), [new Coordinate(1242, 2261), new Coordinate(9463, 1231)]);
         let m3 = new Movie("Avatar", "EEUU", new Date("2022/07/22"), "Un nuevo planeta", "img/avatar.jpg", new Resource(180, "link1"), [new Coordinate(8973, 1314)]);
@@ -46,7 +70,10 @@ class VideoSystemController {
         let d4 = new Person("Lola", "Márquez", "Jiménez", new Date("2000/09/11"), "img/director4.jpg");
 
         //Usuario
-        let us1 = new User("Alejandro5", "alejandro@gmail.com", "alex555");
+        let us1 = new User("admin", "admin@gmail.com", "admin");
+
+        //Meter usuario
+        this.#videoSystemModel.addUser(us1);
 
         //Asignación de producciones a las categorías
         this.#videoSystemModel.assignCategory(c1, m1, m2, m3, m4);
@@ -67,7 +94,7 @@ class VideoSystemController {
         this.#videoSystemModel.assignActor(a5, m3, m1, m8);
         this.#videoSystemModel.assignActor(a1, m3, s3, m7);
         this.#videoSystemModel.assignActor(a2, s2, m5);
-        this.#videoSystemModel.assignActor(a3, s4, m7, m6);
+        this.#videoSystemModel.assignActor(a3, s4, m6);
         this.#videoSystemModel.assignActor(a6, m2, s2);
         this.#videoSystemModel.assignActor(a7, m4, s3, m1);
         this.#videoSystemModel.assignActor(a8, m4, s4);
@@ -106,11 +133,16 @@ class VideoSystemController {
             this.handleNewProductionForm,
             this.handleRemoveProductionForm
             );
+        this.#videoSystemView.showLoginMenu();
+        this.#videoSystemView.bindLoginMenu(
+            this.handleNewLoginForm
+        )
 
     }
 
     //Función de inicio
     onInit = () => {
+
         this.#videoSystemView.init(this.#videoSystemModel.Categories, this.#videoSystemModel.ProduccionesAleatorias);
         this.#videoSystemView.bindProductionsCategoryList(
             this.handleProductionsCategoryList
@@ -121,6 +153,12 @@ class VideoSystemController {
         this.#videoSystemView.bindProductionInfo(
             this.handleProductionInfo
         );
+
+        if (document.cookie == "Usuario=admin") {
+            console.log("TRUE");
+        }
+
+        this.onAddMap();
     }
 
     //Handle para la función de inicio
@@ -211,6 +249,11 @@ class VideoSystemController {
 
         this.#videoSystemView.totalWindows = []; // limpia la lista de ventanas abiertas
 
+    }
+
+    handleNewLoginForm = () => {
+        this.#videoSystemView.showNewLoginForm();
+        this.#videoSystemView.bindLoginForm(this.handleLogin, this.onLoad);
     }
 
     //Handle para el formulario de nuevas categorías
@@ -437,6 +480,27 @@ class VideoSystemController {
         this.#videoSystemView.showRemoveProductionModal(done, pro, error);
     }
 
+    //Para crear el geocoder
+    onAddMap() {
+
+        this.#videoSystemView.createGeoCoder();
+
+    }
+
+
+    //Para la validación del usuario admin
+    handleLogin = (userF, passF) => {
+
+        let encontrado = false;
+        for (let user of this.#videoSystemModel.Users) {
+            if ((user.username == userF) && (user.password == passF)) {
+                encontrado = true;
+            }
+        }
+
+        return encontrado;
+
+    }
 
 
 
